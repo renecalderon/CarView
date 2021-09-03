@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+	<title>@hasSection('title') @yield('title') | @endif {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	 @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -32,10 +33,33 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+					@auth()
                     <ul class="navbar-nav mr-auto">
-
+						<!--Nav Bar Hooks - Do not delete!!-->
+						<li class="nav-item">
+                            <a href="{{ url('/tipos') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Tipos</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/talleres') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Talleres</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/marcas') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Marcas</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/reparaciones') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Reparaciones</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/users') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Users</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/sucursales') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Sucursales</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/empresas') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Empresas</a> 
+                        </li>
                     </ul>
-
+					@endauth()
+					
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -52,7 +76,7 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
@@ -75,9 +99,15 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-2">
             @yield('content')
         </main>
     </div>
+    @livewireScripts
+<script type="text/javascript">
+	window.livewire.on('closeModal', () => {
+		$('#exampleModal').modal('hide');
+	});
+</script>
 </body>
 </html>

@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'CarView',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>Car</b>View',
+    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'CarView',
 
     /*
     |--------------------------------------------------------------------------
@@ -226,7 +226,7 @@ return [
     'menu' => [
         [
             'text' => 'Pesquisa',
-            'search' => true,
+            'search' => false,
             'topnav' => true,
         ],
         [
@@ -237,8 +237,71 @@ return [
         [
             'text' => 'Dashboard',
             'url'  => '/admin',
-            'can'  => 'admin.index',
+            //'can'  => 'admin.index',
         ],
+        [
+            'header' => 'ADMINISTRADOR',
+            'can' => 'empresas.index',
+        ],
+        [
+            'text' => 'Empresas',
+            'url'  => '/empresas',
+            'icon' => 'fas fa-cog fa-fw',
+            'can'  => 'empresas.index',
+        ],
+        [
+            'text' => 'Agencias',
+            'url'  => '/sucursales',
+            'icon' => 'fas fa-cogs fa-fw',
+            'can'  => 'sucursales.index',
+        ],
+        [
+            'text' => 'Marcas',
+            'url'  => '/marcas',
+            'icon' => 'fas fa-car fa-fw',
+            'can'  => 'empresas.index',
+        ],
+        [
+            'text' => 'Talleres',
+            'url'  => '/talleres',
+            'icon' => 'fas fa-wrench fa-fw',
+            'can'  => 'empresas.index',
+        ],
+        [
+            'text' => 'Usuarios',
+            'url'  => '/users',
+            'icon' => 'fas fa-users fa-fw',
+            'can'  => 'users.index',
+        ],
+        [
+            'header' => 'SERVICIO',
+            'can' => 'empresas.index',
+        ],
+        [
+            'text' => 'Citas',
+            'url'  => '/citas',
+            'icon' => 'fas fa-user-clock fa-fw',
+            'can'  => 'citas.index',
+        ],
+        [
+            'text' => 'Reparaciones',
+            'url'  => '/reparaciones',
+            'icon' => 'fas fa-tools fa-fw',
+            'can'  => 'reparaciones.index',
+        ],
+        [
+            'text' => 'Seguridad',
+            'url'  => '/seguridad',
+            'icon' => 'fas fa-user-shield fa-fw',
+            'can'  => 'seguridad.index',
+        ],
+        [
+            'text' => 'Tecnicos',
+            'url'  => '/tecnicos',
+            'icon' => 'fas fa-tools fa-fw',
+            'can'  => 'tecnicos.index',
+        ],
+
     ],
 
     /*
@@ -277,27 +340,30 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    //'location' => '//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js'
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    //'location' => '//cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    //'location' => '//cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css',
                 ],
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -359,5 +425,5 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];
