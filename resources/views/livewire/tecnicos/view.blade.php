@@ -5,9 +5,11 @@
 			<div class="card">
 				<div class="card-header">
 					<div style="display: flex; justify-content: space-between; align-items: center;">
-						<div wire:poll.60s>
+
+                        <div wire:poll.60s>
 							<code><h5>{{ now()->format('j M, g:i a') }}</h5></code>
 						</div>
+
                         @if (session()->has('message'))
                             <div wire:poll.4s class="btn btn-sm btn-success" style="margin-top:0px; margin-bottom:0px;"> {{ session('message') }} </div>
                         @endif
@@ -50,7 +52,6 @@
                             </tbody>
                         </table>
                         {{ $reparaciones->links() }}
-                        </div>
                     </div>
                 </div>
 			</div>

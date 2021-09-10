@@ -64,7 +64,7 @@
                                 <div class="col-sm-8">
                                     <select wire:model.defer="estado_id" type="text" class="form-control" id="estado_id" placeholder="Estado">
                                         @foreach ($estados as $estado)
-                                            <option value="{{$estado->id}}">{{$estado->nombre}}: {{$estado->descripcion}}</option>
+                                            <option value="{{$estado->id}}">{{$estado->nombre}}</option>
                                         @endforeach
                                     </select>
                                 </div>

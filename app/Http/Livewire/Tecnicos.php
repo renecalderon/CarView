@@ -7,6 +7,7 @@ use App\Models\Comentario;
 use App\Models\Estado;
 use App\Models\Marca;
 use App\Models\Reparacion;
+use App\Models\Tiempo;
 use App\Models\Tipo;
 use App\Models\User;
 use App\Models\Vehiculo;
@@ -24,7 +25,10 @@ class Tecnicos extends Component
     public $nombre, $apellidopaterno, $apellidomaterno, $email, $celular;
     public $vin, $matricula, $familia, $modelo, $color, $anio, $marca_id, $cliente_id;
     public $comentarios;
-    public $asesor;
+    public $asesorasignado, $tecnicoasignado;
+    public $estado;
+    //public $tiempos = [];
+    public $tareapendiente;
     public $updateMode = false;
 
     public function render()
@@ -50,6 +54,7 @@ class Tecnicos extends Component
                     });
                 })
                 ->Paginate(5),
+
             'marcas' => Marca::all(),
             'estados' => Estado::all(),
             'tipos' => Tipo::all(),
@@ -69,7 +74,8 @@ class Tecnicos extends Component
     {
 		$this->referencia = null;
 		$this->descripcion = null;
-        $this->asesor = null;
+        $this->asesorasignado = null;
+        $this->tecnicoasignado = null;
         $this->nombre = null;
         $this->apellidopaterno = null;
         $this->apellidomaterno = null;
@@ -81,6 +87,8 @@ class Tecnicos extends Component
         $this->anio = null;
         $this->comentarios = null;
         $this->codigodmsoperadortecnico = null;
+        $this->estado = null;
+        $this->tareapendiente = null;
 
     }
 
@@ -115,98 +123,86 @@ class Tecnicos extends Component
         if (!empty($record->codigodmsasesorservicio)) {
             $asesorasignado = User::where('codigodmsasesorservicio', $record->codigodmsasesorservicio)->first();
             if (!empty($asesorasignado->name)) {
-                $this->asesor = $asesorasignado->name;
+                $this->asesorasignado = $asesorasignado->name;
             }
         }
+
+        /* if (!empty($record->codigodmsoperadortecnico)) {
+            $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $record->codigodmsoperadortecnico)->first();
+            if (!empty($this->tecnicoasignado->id)) {
+                $tiempos = Tiempo::where('reparacion_id', $this->selected_id)->where('user_id',$this->tecnicoasignado->id)->get();
+                if (count($tiempos) >= 1) {
+                    $this->tiempos = $tiempos;
+                }
+            }
+        } */
+
+        if (!empty($record->codigodmsoperadortecnico)) {
+            $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $record->codigodmsoperadortecnico)->first();
+            if (!empty($this->tecnicoasignado->id)) {
+                $task = Tiempo::where('reparacion_id', $this->selected_id)
+                    ->where('user_id',$this->tecnicoasignado->id)
+                    ->whereDate('created_at', Carbon::today())
+                    ->whereNull('fin')
+                    ->first();
+
+                if (empty($task->id)) {
+                    $this->tareapendiente = false;
+                }else{
+                    $this->tareapendiente = true;
+                }
+            }
+        }
+
+
+        $status = Estado::find($record->estado_id);
+        $this->estado = $status->nombre;
 
         $this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
 
         $this->updateMode = true;
     }
 
-    public function update()
+    public function showTareaPendiente($selected_id, $value)
     {
-        $this->validate([
-		'descripcion' => 'required',
+        $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $value)->first();
+        //$this->tecnicoasignado = $value;
+
+        $task = Tiempo::where('reparacion_id', $selected_id)
+            ->where('user_id',$this->tecnicoasignado->id)
+            ->whereDate('created_at', Carbon::today())
+            ->whereNull('fin')
+            ->first();
+
+        if (empty($task->id)) {
+            $this->tareapendiente = false;
+        }else{
+            $this->tareapendiente = true;
+        }
+    }
+
+
+    public function update($selected_id, $tecnicoasignado, $tareapendiente)
+    {
+        /* $this->validate([
+		'codigodmsoperadortecnico' => 'required',
         ]);
 
-        /*
         if ($this->selected_id) {
 			$record = Reparacion::find($this->selected_id);
-
-            if (empty($this->fechaingreso)) {
-                $this->fechaingreso = date('Y-m-d h:i:s');
-            }
-
-            // Agregar comentario de cambio de estado de OR
-            if ($record->estado_id != $this->estado_id) {
-                $estado = Estado::find($this->estado_id);
-                $comentario = new Comentario();
-                $comentario->comentario = $estado->descripcion;
-                $comentario->reparacion_id = $this->selected_id;
-                $comentario->user_id = auth()->id();
-                $comentario->save();
-            }
-
-            // Actualizar OR
             $record->update([
-                'referencia' => $this->referencia,
-                'descripcion' => $this->descripcion,
-                'fechacita' => $this->fechacita,
-                'tiempoestimado' => $this->tiempoestimado,
-                'fechaingreso' => $this->fechaingreso,
-                'fechafin' => $this->fechafin,
-                'fechaentrega' => $this->fechaentrega,
-                'codigodmsasesorservicio' => $this->codigodmsasesorservicio,
                 'codigodmsoperadortecnico' => $this->codigodmsoperadortecnico,
-                'matriculatemporal' => $this->matriculatemporal,
-                'user_id' => $this->user_id,
-                'estado_id' => $this->estado_id,
-                'vehiculo_id' => $this->vehiculo_id,
-                'taller_id' => $this->taller_id,
-                'tipo_id' => $this->tipo_id
             ]);
-
-            // Actualizar datos de Cliente
-            if ($record->vehiculo->cliente->nombre != $this->nombre ||
-                $record->vehiculo->cliente->apellidopaterno != $this->apellidopaterno ||
-                $record->vehiculo->cliente->apellidomaterno != $this->apellidomaterno ||
-                $record->vehiculo->cliente->email != $this->email ||
-                $record->vehiculo->cliente->celular != $this->celular
-            ) {
-                $record->vehiculo->cliente->update([
-                    'nombre' => $this->nombre,
-                    'apellidopaterno' => $this->apellidopaterno,
-                    'apellidomaterno' => $this->apellidomaterno,
-                    'email' => $this->email,
-                    'celular' => $this->celular
-                ]);
-            }
-
-            // Actualizar vehiculo
-            if ($record->vehiculo->vin != $this->vin ||
-                $record->vehiculo->matricula != $this->matricula ||
-                $record->vehiculo->familia != $this->familia ||
-                $record->vehiculo->modelo != $this->modelo ||
-                $record->vehiculo->color != $this->color ||
-                $record->vehiculo->anio != $this->anio ||
-                $record->vehiculo->marca_id != $this->marca_id
-            ) {
-                $record->vehiculo->cliente->update([
-                    'vin' => $this->vin,
-                    'matricula' => $this->matricula,
-                    'familia' => $this->familia,
-                    'modelo' => $this->modelo,
-                    'color' => $this->color,
-                    'anio' => $this->anio,
-                    'marca_id' => $this->marca_id
-                ]);
-            }
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Orden de servicio actualizada.');
-        }
-        */
+			session()->flash('message', 'Registro actualizado');
+        } */
+
+
+        $this->resetInput();
+        $this->updateMode = false;
+        session()->flash('message', 'Registro actualizado');
+
     }
 }
