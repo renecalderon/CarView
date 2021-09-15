@@ -11,12 +11,15 @@ class CreteTiemposTable extends Migration
         Schema::create('tiempos', function (Blueprint $table) {
             $table->id();
             $table->string('estado');
-            $table->dateTime('inicio')->nullable();
-            $table->dateTime('fin')->nullable();
+            /* $table->dateTime('inicio');
+            $table->dateTime('fin')->nullable(); */
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('tecnico_id');
+            $table->foreign('tecnico_id')->references('id')->on('users');
 
             $table->unsignedBigInteger('reparacion_id');
             $table->foreign('reparacion_id')->references('id')->on('reparaciones');

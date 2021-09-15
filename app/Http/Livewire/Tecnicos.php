@@ -27,8 +27,7 @@ class Tecnicos extends Component
     public $comentarios;
     public $asesorasignado, $tecnicoasignado;
     public $estado;
-    //public $tiempos = [];
-    public $tareapendiente;
+    public $task_id, $task;
     public $updateMode = false;
 
     public function render()
@@ -88,7 +87,8 @@ class Tecnicos extends Component
         $this->comentarios = null;
         $this->codigodmsoperadortecnico = null;
         $this->estado = null;
-        $this->tareapendiente = null;
+        $this->task_id = null;
+        $this->task = null;
 
     }
 
@@ -127,82 +127,78 @@ class Tecnicos extends Component
             }
         }
 
-        /* if (!empty($record->codigodmsoperadortecnico)) {
-            $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $record->codigodmsoperadortecnico)->first();
-            if (!empty($this->tecnicoasignado->id)) {
-                $tiempos = Tiempo::where('reparacion_id', $this->selected_id)->where('user_id',$this->tecnicoasignado->id)->get();
-                if (count($tiempos) >= 1) {
-                    $this->tiempos = $tiempos;
-                }
-            }
-        } */
-
         if (!empty($record->codigodmsoperadortecnico)) {
-            $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $record->codigodmsoperadortecnico)->first();
-            if (!empty($this->tecnicoasignado->id)) {
+            $tecnicoasignado = User::select('id')->where('codigodmsoperadortecnico', $record->codigodmsoperadortecnico)->first();
+            if (!empty($tecnicoasignado->id)) {
+                $this->tecnicoasignado = $tecnicoasignado->id;
                 $task = Tiempo::where('reparacion_id', $this->selected_id)
-                    ->where('user_id',$this->tecnicoasignado->id)
+                    ->where('tecnico_id',$this->tecnicoasignado)
+                    ->where('estado', 'open')
                     ->whereDate('created_at', Carbon::today())
-                    ->whereNull('fin')
                     ->first();
 
-                if (empty($task->id)) {
-                    $this->tareapendiente = false;
+                if (!empty($task->id)) {
+                    $this->task = $task;
+                    $this->task_id = $task->id;
                 }else{
-                    $this->tareapendiente = true;
+                    $this->task_id = null;
                 }
             }
         }
 
-
         $status = Estado::find($record->estado_id);
         $this->estado = $status->nombre;
 
-        $this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
+        //$this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
 
         $this->updateMode = true;
     }
 
     public function showTareaPendiente($selected_id, $value)
     {
-        $this->tecnicoasignado = User::where('codigodmsoperadortecnico', $value)->first();
-        //$this->tecnicoasignado = $value;
+        $tecnicoasignado = User::select('id')->where('codigodmsoperadortecnico', $value)->first();
+        $this->tecnicoasignado = $tecnicoasignado->id;
 
         $task = Tiempo::where('reparacion_id', $selected_id)
-            ->where('user_id',$this->tecnicoasignado->id)
+            ->where('tecnico_id',$this->tecnicoasignado)
+            ->where('estado', 'open')
             ->whereDate('created_at', Carbon::today())
-            ->whereNull('fin')
             ->first();
 
-        if (empty($task->id)) {
-            $this->tareapendiente = false;
+        if (!empty($task->id)) {
+            $this->task = $task;
+            $this->task_id = $task->id;
         }else{
-            $this->tareapendiente = true;
+            $this->task_id = null;
         }
     }
 
-
-    public function update($selected_id, $tecnicoasignado, $tareapendiente)
+    public function iniciar($selected_id, $tecnicoasignado)
     {
-        /* $this->validate([
-		'codigodmsoperadortecnico' => 'required',
+        Tiempo::create([
+            'estado' => 'open',
+            'user_id' => auth()->id(),
+            'tecnico_id' => $tecnicoasignado,
+            'reparacion_id' => $selected_id,
         ]);
 
-        if ($this->selected_id) {
-			$record = Reparacion::find($this->selected_id);
+        $this->resetInput();
+        $this->updateMode = false;
+        session()->flash('message', 'Iniciando trabajo...');
+    }
+
+    public function finalizar($task_id)
+    {
+        if ($this->task_id) {
+			$record = Tiempo::find($this->task_id);
+
             $record->update([
-                'codigodmsoperadortecnico' => $this->codigodmsoperadortecnico,
+                'estado' => 'closed',
             ]);
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Registro actualizado');
-        } */
-
-
-        $this->resetInput();
-        $this->updateMode = false;
-        session()->flash('message', 'Registro actualizado');
-
+            session()->flash('message', 'Trabajo terminado');
+        }
     }
 }

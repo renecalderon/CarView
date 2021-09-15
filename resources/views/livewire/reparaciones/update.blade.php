@@ -153,6 +153,7 @@
                                 <label for="codigodmsasesorservicio" class="col-sm-4 col-form-label">Asesor asignado</label>
                                 <div class="col-sm-8">
                                     <select wire:model.defer="codigodmsasesorservicio" type="text" class="form-control" id="codigodmsasesorservicio" placeholder="Seleccione Asesor">
+                                        <option value=""> -- Seleccione asesor -- </option>
                                         @foreach ($asesores as $asesor)
                                             <option value="{{$asesor->codigodmsasesorservicio}}">{{$asesor->name}}</option>
                                         @endforeach
@@ -167,6 +168,7 @@
                                 <label for="codigodmsoperadortecnico" class="col-sm-4 col-form-label">Tecnico asignado</label>
                                 <div class="col-sm-8">
                                     <select wire:model.defer="codigodmsoperadortecnico" type="text" class="form-control" id="codigodmsoperadortecnico" placeholder="Seleccione Tecnico">
+                                        <option value=""> -- Seleccione tecnico -- </option>
                                         @foreach ($tecnicos as $tecnico)
                                             <option value="{{$tecnico->codigodmsoperadortecnico}}">{{$tecnico->name}}</option>
                                         @endforeach

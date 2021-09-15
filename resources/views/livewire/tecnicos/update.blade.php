@@ -44,12 +44,11 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group row">
                                 <label for="codigodmsoperadortecnico" class="col-sm-5 col-form-label">Selecciona tu nombre:</label>
                                 <div class="col-sm-7">
-                                    {{-- <select wire:model.defer="codigodmsoperadortecnico" type="text" class="form-control" id="codigodmsoperadortecnico" placeholder="Seleccione Tecnico"> --}}
                                     <select wire:click="showTareaPendiente({{$selected_id}}, $event.target.value)" wire:model="codigodmsoperadortecnico" type="text" class="form-control" id="codigodmsoperadortecnico" placeholder="Seleccione Tecnico">
+                                        <option value="">-- Seleccione --</option>
                                         @foreach ($tecnicos as $tecnico)
                                             <option value="{{$tecnico->codigodmsoperadortecnico}}">{{$tecnico->name}} {{$tecnico->apellidopaterno}}</option>
                                         @endforeach
@@ -61,25 +60,15 @@
                                 @enderror
                             </div>
 
+
                             <div class="form-group row">
-                                {{-- @if ( $tiempos->isEmpty() )
-                                    <button type="button" class="btn btn-success btn-block"><i class="fas fa-play"></i> Iniciar</button>
-                                @else
-                                    <button type="button" class="btn btn-primary btn-block"><i class="fas fa-play"></i> Finalizar</button>
-                                @endif --}}
-                                {{-- @if (empty($tiempos))
-                                    <button type="button" class="btn btn-success btn-block"><i class="fas fa-play"></i> Iniciar</button>
-                                @else
-                                    <button type="button" class="btn btn-danger btn-block"><i class="fas fa-play"></i> Finalizar</button>
-                                @endif --}}
-
-                                {{-- <p>Tecnico: {{$tecnicoasignado}} {{$tareapendiente}}</p> --}}
-                                @if ($tareapendiente)
-                                    <button type="button" wire:click.prevent="update({{$selected_id}}, {{$tecnicoasignado}}, {{$tareapendiente}})" class="btn btn-primary btn-block"><i class="fas fa-play"></i> Finalizar</button>
-                                @else
-                                    <button type="button" wire:click.prevent="update({{$selected_id}}, {{$tecnicoasignado}}, {{$tareapendiente}})" class="btn btn-success btn-block"><i class="fas fa-play"></i> Iniciar</button>
+                                @if (!empty($tecnicoasignado))
+                                    @if ($task_id !== null)
+                                        <button type="button" wire:click.prevent="finalizar({{$task_id}})" class="btn btn-lg btn-danger btn-block" data-dismiss="modal"><i class="fas fa-stop"></i> Finalizar Trabajo <span class="badge bg-success">{{\Carbon\Carbon::parse($task->created_at)->diffForHumans()}}</span></button>
+                                    @else
+                                        <button type="button" wire:click.prevent="iniciar({{$selected_id}}, {{$tecnicoasignado}})" class="btn btn-lg btn-success btn-block" data-dismiss="modal"><i class="fas fa-play"></i> Iniciar Trabajo</button>
+                                    @endif
                                 @endif
-
                             </div>
 
                         </div>

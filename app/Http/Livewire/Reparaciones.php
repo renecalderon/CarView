@@ -118,7 +118,7 @@ class Reparaciones extends Component
 		$this->fechaingreso = $record-> fechaingreso;
 		$this->fechafin = $record-> fechafin;
 		$this->fechaentrega = $record-> fechaentrega;
-		$this->codigodmsasesorservicio = $record-> codigodmsasesorservicio;
+        $this->codigodmsasesorservicio = $record-> codigodmsasesorservicio;
 		$this->codigodmsoperadortecnico = $record-> codigodmsoperadortecnico;
 		$this->matriculatemporal = $record-> matriculatemporal;
 		$this->user_id = $record-> user_id;
@@ -153,6 +153,8 @@ class Reparaciones extends Component
         $this->validate([
 		'descripcion' => 'required',
 		'user_id' => 'required',
+        'codigodmsasesorservicio' => 'required',
+        'codigodmsoperadortecnico' => 'required',
         ]);
 
         if ($this->selected_id) {
