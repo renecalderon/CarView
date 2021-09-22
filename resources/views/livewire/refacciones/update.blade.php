@@ -44,31 +44,23 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="codigodmsoperadortecnico" class="col-sm-5 col-form-label">Selecciona tu nombre:</label>
-                                <div class="col-sm-7">
-                                    <select wire:click="showTareaPendiente({{$selected_id}}, $event.target.value)" wire:model="codigodmsoperadortecnico" type="text" class="form-control" id="codigodmsoperadortecnico" placeholder="Seleccione Tecnico">
-                                        <option value="">-- Seleccione --</option>
-                                        @foreach ($tecnicos as $tecnico)
-                                            <option value="{{$tecnico->codigodmsoperadortecnico}}">{{$tecnico->name}} {{$tecnico->apellidopaterno}}</option>
-                                        @endforeach
-                                    </select>
+                            <form>
+                                <input type="hidden" wire:model.defer="selected_id">
+                                <div class="form-group row">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="filenames" wire:model="filenames" multiple>
+                                            <label class="custom-file-label" for="filenames">
+                                                @if ($filenames)
+                                                    {{count($filenames)}} archivos seleccionados
+                                                @else
+                                                    Seleccione archivo...
+                                                @endif
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                @error('codigodmsoperadortecnico')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group row">
-                                @if (!empty($tecnicoasignado))
-                                    @if ($task_id !== null)
-                                        <button type="button" wire:click.prevent="finalizar({{$task_id}})" class="btn btn-lg btn-danger btn-block" data-dismiss="modal"><i class="fas fa-stop"></i> Finalizar Trabajo <span class="badge bg-success">{{\Carbon\Carbon::parse($task->created_at)->diffForHumans()}}</span></button>
-                                    @else
-                                        <button type="button" wire:click.prevent="iniciar({{$selected_id}}, {{$tecnicoasignado}})" class="btn btn-lg btn-success btn-block" data-dismiss="modal"><i class="fas fa-play"></i> Iniciar Trabajo</button>
-                                    @endif
-                                @endif
-                            </div>
+                            </form>
 
                         </div>
                         <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
@@ -80,7 +72,7 @@
 
             <div class="modal-footer">
                 <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                {{-- <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button> --}}
+                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
             </div>
         </div>
     </div>

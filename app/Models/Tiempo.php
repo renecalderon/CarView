@@ -11,6 +11,5 @@ class Tiempo extends Model
 
     protected $table = 'tiempos';
 
-    //protected $fillable = ['inicio', 'fin', 'user_id', 'tecnico_id', 'reparacion_id'];
     protected $fillable = ['estado', 'user_id', 'tecnico_id', 'reparacion_id'];
 }

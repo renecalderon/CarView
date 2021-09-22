@@ -16,7 +16,6 @@ class CreatePropuestasTable extends Migration
         Schema::create('propuestas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->dateTime('fecha');
             $table->timestamps();
 
             $table->unsignedBigInteger('reparacion_id');

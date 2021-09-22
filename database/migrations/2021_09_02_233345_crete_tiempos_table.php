@@ -11,8 +11,6 @@ class CreteTiemposTable extends Migration
         Schema::create('tiempos', function (Blueprint $table) {
             $table->id();
             $table->string('estado');
-            /* $table->dateTime('inicio');
-            $table->dateTime('fin')->nullable(); */
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');

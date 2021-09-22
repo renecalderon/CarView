@@ -28,6 +28,7 @@ Route::get('/bemvindos', function(){
 //Route Hooks - Do not delete//
 	Route::view('tipos', 'livewire.tipos.index')->middleware('auth');
 
+    Route::view('refacciones', 'livewire.refacciones.index')->middleware('can:refacciones.index');
     Route::view('tecnicos', 'livewire.tecnicos.index')->middleware('can:tecnicos.index');
     Route::view('seguridad', 'livewire.seguridad.index')->middleware('can:seguridad.index');
     Route::view('citas', 'livewire.citas.index')->middleware('can:citas.index');

@@ -34,7 +34,6 @@ class Tecnicos extends Component
     {
         $keyWord = '%'.$this->keyWord .'%';
         return view('livewire.tecnicos.view', [
-            /* 'reparaciones' => Reparacion::whereDate('updated_at', Carbon::today()) */
             'reparaciones' => Reparacion::latest()->orderBy('updated_at', 'DESC')
                 ->orWhere('referencia', 'LIKE', $keyWord)
                 ->orWhere('descripcion', 'LIKE', $keyWord)
@@ -148,8 +147,6 @@ class Tecnicos extends Component
 
         $status = Estado::find($record->estado_id);
         $this->estado = $status->nombre;
-
-        //$this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
 
         $this->updateMode = true;
     }

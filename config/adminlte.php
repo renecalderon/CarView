@@ -301,6 +301,13 @@ return [
             'icon' => 'fas fa-tools fa-fw',
             'can'  => 'tecnicos.index',
         ],
+        [
+            'text' => 'Refacciones',
+            'url'  => '/refacciones',
+            'icon' => 'fas fa-tools fa-fw',
+            'can'  => 'tecnicos.index',
+        ],
+
 
     ],
 
