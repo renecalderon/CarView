@@ -132,7 +132,7 @@ public $nuevosRoles = [];
                 'sucursal_id' => $this-> sucursal_id,
                 'password' => Hash::make($this->password),
             ]);
-dd($nuevosRoles);
+
             //$record->syncRoles([$this->roles]);
 
             $this->resetInput();

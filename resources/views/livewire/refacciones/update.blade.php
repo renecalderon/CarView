@@ -2,7 +2,6 @@
 <div wire:ignore.self class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-
             <div class="card card-tabs">
                 <div class="card-header p-0 pt-1 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -10,15 +9,20 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-tabs-three-reparacion-tab" data-toggle="pill" href="#custom-tabs-three-reparacion" role="tab" aria-controls="custom-tabs-three-reparacion" aria-selected="true">Orden de Servicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas</a>
-                        </li>
+                        @if($propuestas > 0)
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas
+                                    <span class="badge bg-danger">
+                                        {{$propuestas}}
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         <div class="tab-pane fade show active" id="custom-tabs-three-reparacion" role="tabpanel" aria-labelledby="custom-tabs-three-reparacion-tab">
-                            {{-- <input type="hidden" wire:model.defer="selected_id"> --}}
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
                                         <h6><code>{{$estado ?? ''}}</code></h6>
@@ -61,11 +65,16 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
 
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                            Informacion de Propuestas
-                        </div>
+                        @if ($propuestas > 0)
+                            <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
+                                @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
+                                    {{$propuesta}}
+                                @endforeach
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>

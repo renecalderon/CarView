@@ -3,21 +3,18 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cliente;
-use App\Models\Comentario;
 use App\Models\Estado;
 use App\Models\Marca;
+use App\Models\Propuesta;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Refaccion;
 use App\Models\Reparacion;
-use App\Models\Taller;
 use App\Models\Tipo;
 use App\Models\User;
 use App\Models\Vehiculo;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
-use Spatie\PdfToText\Pdf;
+use Illuminate\Support\Str;
 
 class Refacciones extends Component
 {
@@ -30,8 +27,9 @@ class Refacciones extends Component
     public $vin, $matricula, $familia, $modelo, $color, $anio, $marca_id, $cliente_id;
     public $asesorasignado, $tecnicoasignado;
     public $filenames;
+    public $datos = [];
+    public $propuestas;
     public $updateMode = false;
-
 
     public function render()
     {
@@ -104,11 +102,33 @@ class Refacciones extends Component
         $this->anio = null;
 
         $this->filenames = null;
+        $this->datos = null;
+
+        $this->propuestas = null;
     }
 
     public function store()
     {
         $this->resetInput();
+
+        /* $this->validate([
+		'parte' => 'required',
+		'descripcion' => 'required',
+		'cantidad' => 'required',
+		'precio' => 'required',
+        ]);
+
+        Refaccion::create([
+			'parte' => $this-> parte,
+			'descripcion' => $this-> descripcion,
+			'cantidad' => $this-> cantidad,
+			'precio' => $this-> precio,
+			'propuesta_id' => $this-> propuesta_id
+        ]);
+
+        $this->resetInput();
+		$this->emit('closeModal');
+		session()->flash('message', 'Refaccione Successfully created.'); */
     }
 
     public function edit($id)
@@ -155,142 +175,109 @@ class Refacciones extends Component
             }
         }
 
+        $this->propuestas = Propuesta::where('reparacion_id', $id)->count();
+
         $this->updateMode = true;
     }
 
     public function update()
     {
-
         $this->validate([
-		'filenames' => 'required',
-		'filenames.*' => 'required',
+            'filenames' => 'required',
+            'filenames.*' => 'required',
         ]);
-
-
 
         foreach ($this->filenames as $key => $file) {
 
+            $propuesta = new Propuesta;
+            $propuesta->nombre = 'Nueva Propuesta';
+            $propuesta->reparacion_id = $this->selected_id;
+            $propuesta->save();
+
+            $datos[$key]['filename'] = $file->getClientOriginalName();
+            $datos[$key]['total'] = 0;
+            $datos[$key]['reparacion_id'] = $this->selected_id;
+            $datos[$key]['propuesta_id'] = $propuesta->id;
+
             $archivo = $file->store('files','public');
             $archivo = storage_path("app/public/$archivo");
+
             $parseador = new \Smalot\PdfParser\Parser();
             $documento = $parseador->parseFile($archivo);
             $texto = $documento->getText();
             $texto = str_replace("\t", '|', $texto);
             $texto = str_replace(" yb", '|', $texto);
             $texto = str_replace("$ ", '|', $texto);
-            $array = preg_split("/[\r\n]+/", $texto);
+            $lineas = preg_split("/[\r\n]+/", $texto);
 
-            for ($i=0; $i < count($array); $i++) {
+            $ajuste = Str::contains($texto, 'Ajuste');
+
+            $datos[$key]['hashfile'] = md5_file($file->getRealPath());
+
+            for ($i=0; $i < count($lineas); $i++) {
+
                 // Identificar el VIN
-                if (preg_match("/[0-9A-Z]{17}/", $array[$i])) {
-                    //dd($array[$i]);
+                if (preg_match("/[0-9A-Z]{17}/", $lineas[$i]) && empty($datos[$key]['vin'])) {
+                    $datos[$key]['vin'] = str_replace("|", '', $lineas[$i]);
                 }
 
                 // Identificar linea con numero de parte
-                if (preg_match("/[0-9]{5}-[0-9A-Z]{5}\|.*\|\|/", $array[$i])) {
-                    dd($array[$i]);
-                }
+                if (preg_match("/[0-9]{5}-[0-9A-Z]{5}\|.*\|\|/", $lineas[$i])) {
+                    $array = explode('|', $lineas[$i]);
 
+                    // Verificar que inicie la linea con numero de parte
+                    if ( preg_match("/^[0-9]{5}-[0-9A-Z]{5}\|.*\|\|/", $lineas[$i]) ) {
+                        $x = $ajuste ? 5 : 3;
+                        $datos[$key]['conceptos'][] = [
+                            'descripcion' => $lineas[$i-2]." ".$lineas[$i-1],
+                            'parte' => $array['0'],
+                            'cantidad' => $array[$x],
+                            'precio' => (double)filter_var($array['7'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                        ];
+                        $datos[$key]['total'] += (double)filter_var($array['7'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }else{
+                        $x = $ajuste ? 6 : 4;
+                        $datos[$key]['conceptos'][] = [
+                            'descripcion' => $array['0'],
+                            'parte' => $array['1'],
+                            'cantidad' => $array[$x],
+                            'precio' => (double)filter_var($array['8'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                        ];
+                        $datos[$key]['total'] += (double)filter_var($array['8'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }
+                }
             }
-
-            dd($array);
-
-
-            /* foreach(preg_split('~[\r\n]+~', $texto) as $linea){
-                // Identificar numero de parte
-                if (preg_match("/[0-9]{5}-[0-9A-Z]{5}/", $linea)) {
-                    dd($linea);
-                }
-            } */
-
-
         }
 
-
-        /*
-        if ($this->selected_id) {
-			$record = Reparacion::find($this->selected_id);
-
-            if (empty($this->fechaingreso)) {
-                $this->fechaingreso = date('Y-m-d h:i:s');
-            }
-
-            // Agregar comentario de cambio de estado de OR
-            if ($record->estado_id != $this->estado_id) {
-                $estado = Estado::find($this->estado_id);
-                $comentario = new Comentario();
-                $comentario->tipo = 'asesor';
-                $comentario->comentario = $estado->descripcion;
-                $comentario->reparacion_id = $this->selected_id;
-                $comentario->user_id = auth()->id();
-                $comentario->save();
-            }
-
-            // Actualizar OR
-            $record->update([
-                'referencia' => $this->referencia,
-                'descripcion' => $this->descripcion,
-                'fechacita' => $this->fechacita,
-                'tiempoestimado' => $this->tiempoestimado,
-                'fechaingreso' => $this->fechaingreso,
-                'fechafin' => $this->fechafin,
-                'fechaentrega' => $this->fechaentrega,
-                'codigodmsasesorservicio' => $this->codigodmsasesorservicio,
-                'codigodmsoperadortecnico' => $this->codigodmsoperadortecnico,
-                'matriculatemporal' => $this->matriculatemporal,
-                'user_id' => $this->user_id,
-                'estado_id' => $this->estado_id,
-                'vehiculo_id' => $this->vehiculo_id,
-                'taller_id' => $this->taller_id,
-                'tipo_id' => $this->tipo_id
+        foreach ($datos as $key => $info) {
+            $propuesta = Propuesta::findOrFail($info['propuesta_id']);
+            $propuesta->update([
+                'filename' => $info['filename'],
+                'hashfile' => $info['hashfile'],
+                'vin' => $info['vin'],
+                'total' => $info['total'],
             ]);
 
-            // Actualizar datos de Cliente
-            if ($record->vehiculo->cliente->nombre != $this->nombre ||
-                $record->vehiculo->cliente->apellidopaterno != $this->apellidopaterno ||
-                $record->vehiculo->cliente->apellidomaterno != $this->apellidomaterno ||
-                $record->vehiculo->cliente->email != $this->email ||
-                $record->vehiculo->cliente->celular != $this->celular
-            ) {
-                $record->vehiculo->cliente->update([
-                    'nombre' => $this->nombre,
-                    'apellidopaterno' => $this->apellidopaterno,
-                    'apellidomaterno' => $this->apellidomaterno,
-                    'email' => $this->email,
-                    'celular' => $this->celular
-                ]);
+            foreach ($info['conceptos'] as $valor) {
+                $refaccion = new Refaccion;
+                $refaccion->parte = $valor['parte'];
+                $refaccion->descripcion = $valor['descripcion'];
+                $refaccion->cantidad = $valor['cantidad'];
+                $refaccion->precio = $valor['precio'];
+                $refaccion->propuesta_id = $datos[$key]['propuesta_id'];
+                $refaccion->save();
             }
+        }
 
-            // Actualizar vehiculo
-            if ($record->vehiculo->vin != $this->vin ||
-                $record->vehiculo->matricula != $this->matricula ||
-                $record->vehiculo->familia != $this->familia ||
-                $record->vehiculo->modelo != $this->modelo ||
-                $record->vehiculo->color != $this->color ||
-                $record->vehiculo->anio != $this->anio ||
-                $record->vehiculo->marca_id != $this->marca_id
-            ) {
-                $record->vehiculo->cliente->update([
-                    'vin' => $this->vin,
-                    'matricula' => $this->matricula,
-                    'familia' => $this->familia,
-                    'modelo' => $this->modelo,
-                    'color' => $this->color,
-                    'anio' => $this->anio,
-                    'marca_id' => $this->marca_id
-                ]);
-            }
-
-            $this->resetInput();
-            $this->updateMode = false;
-			session()->flash('message', 'Orden de servicio actualizada.');
-        } */
+        $this->resetInput();
+        $this->updateMode = false;
+        session()->flash('message', 'Se han almacenado los archivos.');
     }
 
     public function destroy($id)
     {
         if ($id) {
-            $record = Reparacion::where('id', $id);
+            $record = Refaccion::where('id', $id);
             $record->delete();
         }
     }

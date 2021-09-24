@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRefaccionesTable extends Migration
+class CreateTrabajosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateRefaccionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('refacciones', function (Blueprint $table) {
+        Schema::create('trabajos', function (Blueprint $table) {
             $table->id();
-            $table->string('parte');
-            $table->string('nombre');
-            $table->decimal('precio');
+            $table->string('name');
+            $table->string('precio');
+            $table->string('horas');
             $table->timestamps();
+
+            $table->unsignedBigInteger('propuesta_id')->nullable();
+            $table->foreign('propuesta_id')->references('id')->on('propuestas');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateRefaccionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('refacciones');
+        Schema::dropIfExists('trabajos');
     }
 }

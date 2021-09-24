@@ -26,10 +26,9 @@
             $('#exampleModal').modal('hide');
         });
     </script>
-
     <script>
         $(function () {
             bsCustomFileInput.init();
         });
-    </script>
+        </script>
 @stop

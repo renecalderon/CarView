@@ -1,6 +1,6 @@
-@section('title', __('Reparaciones'))
+@section('title', __('Refacciones'))
 <div class="container-fluid">
-	<div class="row justify-content-left">
+	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
@@ -23,8 +23,8 @@
 					</div>
 				</div>
 
-                <div class="card-body">
-					@include('livewire.refacciones.update')
+				<div class="card-body">
+                    @include('livewire.refacciones.update')
 
                     <div class="table-responsive">
                         <table class="table table-sm">
@@ -67,7 +67,7 @@
                         </table>
                         {{ $reparaciones->links() }}
                     </div>
-                </div>
+				</div>
 			</div>
 		</div>
 	</div>

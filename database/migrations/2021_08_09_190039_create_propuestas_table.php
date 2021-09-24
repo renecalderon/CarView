@@ -16,22 +16,26 @@ class CreatePropuestasTable extends Migration
         Schema::create('propuestas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('vin')->nullable();
+            $table->string('total')->nullable();
+            $table->string('filename')->nullable();
+            $table->string('hashfile')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('reparacion_id');
             $table->foreign('reparacion_id')->references('id')->on('reparaciones');
 
-            $table->unsignedBigInteger('status_id');
+            $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('status');
 
-            $table->unsignedBigInteger('semaforo_id');
+            $table->unsignedBigInteger('semaforo_id')->nullable();
             $table->foreign('semaforo_id')->references('id')->on('semaforos');
 
-            $table->unsignedBigInteger('refaccion_id');
+            /* $table->unsignedBigInteger('refaccion_id');
             $table->foreign('refaccion_id')->references('id')->on('refacciones');
 
             $table->unsignedBigInteger('trabajo_id');
-            $table->foreign('trabajo_id')->references('id')->on('trabajos');
+            $table->foreign('trabajo_id')->references('id')->on('trabajos'); */
         });
     }
 

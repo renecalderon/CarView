@@ -37,6 +37,12 @@
                     <ul class="navbar-nav mr-auto">
 						<!--Nav Bar Hooks - Do not delete!!-->
 						<li class="nav-item">
+                            <a href="{{ url('/refacciones') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Refacciones</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/propuestas') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Propuestas</a> 
+                        </li>
+						<li class="nav-item">
                             <a href="{{ url('/tipos') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Tipos</a> 
                         </li>
 						<li class="nav-item">
