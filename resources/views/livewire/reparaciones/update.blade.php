@@ -14,9 +14,15 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-three-vehiculo-tab" data-toggle="pill" href="#custom-tabs-three-vehiculo" role="tab" aria-controls="custom-tabs-three-vehiculo" aria-selected="false">Vehiculo</a>
                     </li>
+                    @if($propuestas > 0)
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas</a>
+                        <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas
+                            <span class="badge bg-danger">
+                                {{$propuestas}}
+                            </span>
+                        </a>
                     </li>
+                    @endif
                 </ul>
             </div>
             <div class="card-body">
@@ -261,9 +267,14 @@
 
                         </form>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                        Informacion de Propuestas
-                    </div>
+
+                    @if ($propuestas > 0)
+                        <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
+                            @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
+                                {{$propuesta}}
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
 

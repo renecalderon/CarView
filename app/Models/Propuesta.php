@@ -13,7 +13,7 @@ class Propuesta extends Model
 
     protected $table = 'propuestas';
 
-    protected $fillable = ['nombre', 'vin', 'total', 'filename', 'hashfile', 'reparacion_id','status_id','semaforo_id'];
+    protected $fillable = ['nombre_propuesta', 'vin', 'total', 'filename', 'path', 'hashfile', 'reparacion_id','status_id','semaforo_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

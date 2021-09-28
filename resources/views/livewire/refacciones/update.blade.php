@@ -2,81 +2,85 @@
 <div wire:ignore.self class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="card card-tabs">
-                <div class="card-header p-0 pt-1 border-bottom-0">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="pt-2 px-3"><h4 class="card-title">{{$referencia}}</h4></li>
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-reparacion-tab" data-toggle="pill" href="#custom-tabs-three-reparacion" role="tab" aria-controls="custom-tabs-three-reparacion" aria-selected="true">Orden de Servicio</a>
-                        </li>
-                        @if($propuestas > 0)
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas
-                                    <span class="badge bg-danger">
-                                        {{$propuestas}}
-                                    </span>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-three-tabContent">
-                        <div class="tab-pane fade show active" id="custom-tabs-three-reparacion" role="tabpanel" aria-labelledby="custom-tabs-three-reparacion-tab">
-                            <div class="card bg-light d-flex flex-fill">
-                                <div class="card-header text-muted border-bottom-0">
-                                        <h6><code>{{$estado ?? ''}}</code></h6>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h5 class="lead">{{$nombre}} {{$apellidopaterno}} {{$apellidomaterno}}</h5>
-                                            <p class="text-muted text-sm"><b>Vehiculo: </b> {{$vin}} / {{$matricula}} / {{$modelo}}/ {{$color}} / {{$anio}} </p>
-                                        </div>
-                                        <div class="col-3 text-center">
-                                            <img src="vendor/adminlte/dist/img/logo.png" alt="user-avatar" class="img-circle img-fluid">
-                                            <p class="text-muted text-sm">{{$asesorasignado ?? ''}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-tools"></i></span> <h6><b><code>{{$descripcion}}</code></b></h6></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar propuestas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true close-btn">×</span>
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="card bg-light d-flex flex-fill">
+                    <div class="card-header text-muted border-bottom-0">
+                        <h6><code>{{$estado ?? ''}}</code></h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-9">
+                                <h5><b><code>{{$referencia}}</code></b></h5>
+                                <h5 class="lead">{{$nombre}} {{$apellidopaterno}} {{$apellidomaterno}}</h5>
+                                <p class="text-muted text-sm"><b>Vehiculo: </b> {{$vin}} / {{$matricula}} / {{$modelo}}/ {{$color}} / {{$anio}} </p>
                             </div>
-
-                            <form>
-                                <input type="hidden" wire:model.defer="selected_id">
-                                <div class="form-group row">
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="filenames" wire:model="filenames" multiple>
-                                            <label class="custom-file-label" for="filenames">
-                                                @if ($filenames)
-                                                    {{count($filenames)}} archivos seleccionados
-                                                @else
-                                                    Seleccione archivo...
-                                                @endif
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <div class="col-3 text-center">
+                                <img src="vendor/adminlte/dist/img/logo.png" alt="user-avatar" class="img-circle img-fluid">
+                                <p class="text-muted text-sm">{{$asesorasignado ?? ''}}</p>
+                            </div>
                         </div>
-
-                        @if ($propuestas > 0)
-                            <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                                @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
-                                    {{$propuesta}}
-                                @endforeach
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-tools"></i></span> <h6><b><code>{{$descripcion}}</code></b></h6></li>
+                                </ul>
                             </div>
-                        @endif
-
+                        </div>
                     </div>
                 </div>
+
+                <form>
+                    <input type="hidden" wire:model.defer="selected_id">
+                    <div class="form-group row">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="filenames" wire:model="filenames" multiple>
+                                <label class="custom-file-label" for="filenames">
+                                    @if ($filenames)
+                                        {{count($filenames)}} archivos seleccionados
+                                    @else
+                                        Seleccione archivo...
+                                    @endif
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                @if ($propuestas > 0)
+                    <div class="table-responsive">
+                        <table class="table m-0 table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Propuesta</th>
+                                    <th>Descripcion</th>
+                                    <th class="text-right">Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
+                                    <tr>
+                                        <td class='align-middle'>{{ $loop->iteration }}</td>
+                                        <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank">{{$propuesta->filename}}</a></td>
+                                        <td class='align-middle'>{{$propuesta->nombre_propuesta}}</td>
+                                        <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
+                                        <td class='align-middle'>
+                                            <button type="button" class="btn btn-danger btn-sm float-right" onclick="confirm('Confirmar eliminacion de propuesta? \nNo se podra deshacer!')||event.stopImmediatePropagation()" wire:click="destroy({{$propuesta->id}})"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
             </div>
 
             <div class="modal-footer">

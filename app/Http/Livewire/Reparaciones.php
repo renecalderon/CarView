@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Comentario;
 use App\Models\Estado;
 use App\Models\Marca;
+use App\Models\Propuesta;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Reparacion;
@@ -28,6 +29,7 @@ class Reparaciones extends Component
     public $nombre, $apellidopaterno, $apellidomaterno, $email, $celular;
     public $vin, $matricula, $familia, $modelo, $color, $anio, $marca_id, $cliente_id;
     public $comentarios;
+    public $propuestas;
     public $updateMode = false;
 
 
@@ -144,6 +146,8 @@ class Reparaciones extends Component
         $this->anio = $vehiculo->anio;
 
         $this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
+
+        $this->propuestas = Propuesta::where('reparacion_id', $id)->count();
 
         $this->updateMode = true;
     }

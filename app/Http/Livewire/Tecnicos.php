@@ -6,7 +6,9 @@ use App\Models\Cliente;
 use App\Models\Comentario;
 use App\Models\Estado;
 use App\Models\Marca;
+use App\Models\Propuesta;
 use App\Models\Reparacion;
+use App\Models\Semaforo;
 use App\Models\Tiempo;
 use App\Models\Tipo;
 use App\Models\User;
@@ -28,6 +30,12 @@ class Tecnicos extends Component
     public $asesorasignado, $tecnicoasignado;
     public $estado;
     public $task_id, $task;
+
+    public $numPropuestas;
+    public $propuestas = [];
+
+    public $semaforos;
+
     public $updateMode = false;
 
     public function render()
@@ -88,6 +96,9 @@ class Tecnicos extends Component
         $this->estado = null;
         $this->task_id = null;
         $this->task = null;
+        $this->numPropuestas = null;
+        $this->propuestas = null;
+        $this->semaforos = null;
 
     }
 
@@ -145,8 +156,12 @@ class Tecnicos extends Component
             }
         }
 
+        $this->numPropuestas = Propuesta::where('reparacion_id', $id)->count();
+
         $status = Estado::find($record->estado_id);
         $this->estado = $status->nombre;
+
+        $this->semaforos = Semaforo::all();
 
         $this->updateMode = true;
     }
@@ -197,5 +212,19 @@ class Tecnicos extends Component
             $this->updateMode = false;
             session()->flash('message', 'Trabajo terminado');
         }
+    }
+
+    public function update()
+    {
+        foreach ($this->propuestas as $id => $descripcion) {
+            $propuesta = Propuesta::find($id);
+            $propuesta->update([
+                'nombre_propuesta' => $descripcion['texto'],
+            ]);
+        }
+
+        $this->resetInput();
+        $this->updateMode = false;
+        session()->flash('message', 'Descripcion de propuesta actualizada.');
     }
 }

@@ -17,6 +17,8 @@ class CreateSemaforosTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion');
+            $table->string('color');
+            $table->string('colorname');
             $table->timestamps();
         });
     }

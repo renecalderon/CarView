@@ -15,10 +15,11 @@ class CreatePropuestasTable extends Migration
     {
         Schema::create('propuestas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre_propuesta');
             $table->string('vin')->nullable();
             $table->string('total')->nullable();
             $table->string('filename')->nullable();
+            $table->string('path')->nullable();
             $table->string('hashfile')->nullable();
             $table->timestamps();
 

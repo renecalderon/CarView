@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Vehiculo;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Refacciones extends Component
 {
@@ -190,7 +191,7 @@ class Refacciones extends Component
         foreach ($this->filenames as $key => $file) {
 
             $propuesta = new Propuesta;
-            $propuesta->nombre = 'Nueva Propuesta';
+            $propuesta->nombre_propuesta = 'Nueva Propuesta';
             $propuesta->reparacion_id = $this->selected_id;
             $propuesta->save();
 
@@ -199,7 +200,8 @@ class Refacciones extends Component
             $datos[$key]['reparacion_id'] = $this->selected_id;
             $datos[$key]['propuesta_id'] = $propuesta->id;
 
-            $archivo = $file->store('files','public');
+            $archivo = $file->store('propuestas','public');
+            $datos[$key]['path'] = $archivo;
             $archivo = storage_path("app/public/$archivo");
 
             $parseador = new \Smalot\PdfParser\Parser();
@@ -253,6 +255,7 @@ class Refacciones extends Component
             $propuesta = Propuesta::findOrFail($info['propuesta_id']);
             $propuesta->update([
                 'filename' => $info['filename'],
+                'path' => $info['path'],
                 'hashfile' => $info['hashfile'],
                 'vin' => $info['vin'],
                 'total' => $info['total'],
@@ -277,8 +280,9 @@ class Refacciones extends Component
     public function destroy($id)
     {
         if ($id) {
-            $record = Refaccion::where('id', $id);
-            $record->delete();
+            $file = Propuesta::select('path')->find($id);
+            Storage::disk('public')->delete($file->path);
+            Propuesta::find($id)->delete();
         }
     }
 }

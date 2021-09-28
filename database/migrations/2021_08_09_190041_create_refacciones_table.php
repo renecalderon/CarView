@@ -22,7 +22,7 @@ class CreateRefaccionesTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('propuesta_id')->nullable();
-            $table->foreign('propuesta_id')->references('id')->on('propuestas');
+            $table->foreign('propuesta_id')->references('id')->on('propuestas')->onDelete('cascade');
         });
     }
 

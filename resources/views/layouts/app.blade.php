@@ -37,6 +37,9 @@
                     <ul class="navbar-nav mr-auto">
 						<!--Nav Bar Hooks - Do not delete!!-->
 						<li class="nav-item">
+                            <a href="{{ url('/semaforos') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Semaforos</a> 
+                        </li>
+						<li class="nav-item">
                             <a href="{{ url('/refacciones') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Refacciones</a> 
                         </li>
 						<li class="nav-item">

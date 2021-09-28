@@ -8,17 +8,22 @@
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                         <li class="pt-2 px-3"><h4 class="card-title">{{$referencia}}</h4></li>
                         <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-reparacion-tab" data-toggle="pill" href="#custom-tabs-three-reparacion" role="tab" aria-controls="custom-tabs-three-reparacion" aria-selected="true">Orden de Servicio</a>
+                            <a class="nav-link active" id="custom-tabs-three-reparacion-tab" data-toggle="pill" href="#custom-tabs-three-reparacion" role="tab" aria-controls="custom-tabs-three-reparacion" aria-selected="true">Orden Servicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas</a>
-                        </li>
+                        @if ($numPropuestas > 0)
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas
+                                    <span class="badge bg-danger">
+                                        {{$numPropuestas}}
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         <div class="tab-pane fade show active" id="custom-tabs-three-reparacion" role="tabpanel" aria-labelledby="custom-tabs-three-reparacion-tab">
-                            {{-- <input type="hidden" wire:model.defer="selected_id"> --}}
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
                                         <h6><code>{{$estado ?? ''}}</code></h6>
@@ -59,7 +64,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
+
                             <div class="form-group row">
                                 @if (!empty($tecnicoasignado))
                                     @if ($task_id !== null)
@@ -71,16 +76,54 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                            Informacion de Propuestas
-                        </div>
+
+                        @if ($numPropuestas > 0)
+                            <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
+                                <div class="table-responsive">
+                                    <table class="table m-0 table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>P</th>
+                                                <th>Descripcion</th>
+                                                <th class="text-right">Total</th>
+                                                <th></th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $index => $propuesta)
+                                                <tr>
+                                                    <td class='align-middle'>{{ $loop->iteration }}</td>
+                                                    <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
+                                                    <td class='align-middle'>
+                                                        {{-- <input wire:model.defer="propuestas.{{$propuesta->id}}.texto" id="{{$propuesta->id}}" name="{{$propuesta->id}}" type="text" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}"> --}}
+                                                        <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.texto" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
+                                                    </td>
+                                                    <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
+                                                    <td>
+                                                        <select wire:model.defer="semaforo_id" type="text" class="form-control" id="semaforo_id" placeholder="Seleccione Semaforo">
+                                                            <option value=""> -- Seleccione semaforo -- </option>
+                                                            @foreach ($semaforos as $semaforo)
+                                                                <option value="{{$semaforo->id}}">{{$semaforo->nombre}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                {{-- <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button> --}}
+                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
             </div>
         </div>
     </div>

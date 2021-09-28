@@ -26,6 +26,7 @@ Route::get('/bemvindos', function(){
 });
 
 //Route Hooks - Do not delete//
+	Route::view('semaforos', 'livewire.semaforos.index')->middleware('auth');
 	//Route::view('refacciones', 'livewire.refacciones.index')->middleware('auth');
 	Route::view('propuestas', 'livewire.propuestas.index')->middleware('auth');
 	Route::view('tipos', 'livewire.tipos.index')->middleware('auth');
