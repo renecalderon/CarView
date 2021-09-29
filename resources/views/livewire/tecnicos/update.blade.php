@@ -86,8 +86,8 @@
                                                 <th>#</th>
                                                 <th>P</th>
                                                 <th>Descripcion</th>
-                                                <th class="text-right">Total</th>
                                                 <th></th>
+                                                <th class="text-right">Total</th>
 
                                             </tr>
                                         </thead>
@@ -97,18 +97,50 @@
                                                     <td class='align-middle'>{{ $loop->iteration }}</td>
                                                     <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
                                                     <td class='align-middle'>
-                                                        {{-- <input wire:model.defer="propuestas.{{$propuesta->id}}.texto" id="{{$propuesta->id}}" name="{{$propuesta->id}}" type="text" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}"> --}}
-                                                        <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.texto" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
+                                                        <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
+                                                    </td>
+                                                    <td>
+                                                        <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo_id" name="semaforo_id">
+
+                                                            {{-- @foreach ($semaforos as $semaforo)
+                                                                @if ($propuesta->semaforo_id == $semaforo->id)
+                                                                    <option value="{{$semaforo->id}}" selected="selected">
+                                                                        {{$propuesta->semaforo_id}}|{{$semaforo->id}}-
+                                                                        {{$semaforo->nombre}}
+                                                                    </option>
+                                                                @else
+                                                                    <option value="{{$semaforo->id}}">
+                                                                        {{$semaforo->nombre}}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach --}}
+
+                                                            <option value="">Seleccione</option>
+                                                            @foreach ($semaforos as $semaforo)
+                                                                <option value="{{$semaforo->id}}"
+                                                                    @if ($propuesta->semaforo_id == $semaforo->id)
+                                                                        {{'selected="selected"'}}
+                                                                    @endif >
+                                                                    {{$propuesta->semaforo_id}}|{{$semaforo->id}}-
+                                                                    {{$semaforo->nombre}}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+
+                                                        <div class="sort-item product">
+                                                            <select name="perPage" class="use-chosen" wire:model="perPage">
+                                                                <option value="6">6 per page</option>
+                                                                <option value="9" selected="selected">9 per page</option>
+                                                                <option value="12">12 per page</option>
+                                                                <option value="18">18 per page</option>
+                                                                <option value="21">21 per page</option>
+                                                                <option value="24">24 per page</option>
+                                                            </select>
+                                                        </div>
                                                     </td>
                                                     <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
-                                                    <td>
-                                                        <select wire:model.defer="semaforo_id" type="text" class="form-control" id="semaforo_id" placeholder="Seleccione Semaforo">
-                                                            <option value=""> -- Seleccione semaforo -- </option>
-                                                            @foreach ($semaforos as $semaforo)
-                                                                <option value="{{$semaforo->id}}">{{$semaforo->nombre}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
