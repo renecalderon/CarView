@@ -79,15 +79,16 @@
 
                         @if ($numPropuestas > 0)
                             <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                                <div class="table-responsive">
-                                    <table class="table m-0 table-sm">
+                                <div class="table-responsive" @if ($numPropuestas == 1) style="min-height:130px;" @endif >
+                                    <table class="table m-0 table-sm" >
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>P</th>
                                                 <th>Descripcion</th>
-                                                <th></th>
                                                 <th class="text-right">Total</th>
+                                                <th></th>
+                                                <th></th>
 
                                             </tr>
                                         </thead>
@@ -99,23 +100,25 @@
                                                     <td class='align-middle'>
                                                         <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
                                                     </td>
-                                                    <td>
-                                                        <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo_id" name="semaforo_id">
+                                                    <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
+                                                    <td class='align-middle'>
+                                                        @foreach ($semaforos as $semaforo)
+                                                            @if ($propuesta->semaforo_id == $semaforo->id)
+                                                                <i class="nav-icon far fa-circle fa-2x text-{{$semaforo->colorname}}"></i>
+                                                                {{-- <i class="fas fa-circle fa-2x text-{{$semaforo->colorname}}"></i> --}}
+                                                                {{-- <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                                                    <ul class="fc-color-picker" id="color-chooser">
+                                                                        <li><a class="text-{{$semaforo->colorname}}" href="#"><i class="fas fa-square"></i></a></li>
+                                                                    </ul>
+                                                                </div> --}}
+                                                            @endif
+                                                        @endforeach
 
-                                                            {{-- @foreach ($semaforos as $semaforo)
-                                                                @if ($propuesta->semaforo_id == $semaforo->id)
-                                                                    <option value="{{$semaforo->id}}" selected="selected">
-                                                                        {{$propuesta->semaforo_id}}|{{$semaforo->id}}-
-                                                                        {{$semaforo->nombre}}
-                                                                    </option>
-                                                                @else
-                                                                    <option value="{{$semaforo->id}}">
-                                                                        {{$semaforo->nombre}}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach --}}
+                                                    </td>
+                                                    <td class='align-middle'>
 
-                                                            <option value="">Seleccione</option>
+                                                        {{-- <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo_id" name="semaforo_id">
+                                                            <option value="">Seleccione...</option>
                                                             @foreach ($semaforos as $semaforo)
                                                                 <option value="{{$semaforo->id}}"
                                                                     @if ($propuesta->semaforo_id == $semaforo->id)
@@ -126,24 +129,31 @@
                                                                 </option>
                                                             @endforeach
 
-                                                        </select>
+                                                        </select> --}}
 
-                                                        <div class="sort-item product">
-                                                            <select name="perPage" class="use-chosen" wire:model="perPage">
-                                                                <option value="6">6 per page</option>
-                                                                <option value="9" selected="selected">9 per page</option>
-                                                                <option value="12">12 per page</option>
-                                                                <option value="18">18 per page</option>
-                                                                <option value="21">21 per page</option>
-                                                                <option value="24">24 per page</option>
-                                                            </select>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fa fa-traffic-light"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                @foreach ($semaforos as $semaforo)
+                                                                    <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="update_semaforo({{$propuesta->id}}, {{$semaforo->id}})"><i class="nav-icon far fa-circle text-{{$semaforo->colorname}}"></i> {{$semaforo->nombre}} </a>
+                                                                @endforeach
+                                                            </div>
                                                         </div>
-                                                    </td>
-                                                    <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
 
+                                                        {{-- <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo" name="semaforo">
+                                                            <option value="">Elegir...</option>
+                                                            @foreach ($semaforos as $semaforo)
+                                                                <option value="{{$semaforo->id}}" class="text-{{$semaforo->colorname}}">{{$semaforo->nombre}} </option>
+                                                            @endforeach
+                                                        </select> --}}
+
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
+
                                     </table>
                                 </div>
                             </div>

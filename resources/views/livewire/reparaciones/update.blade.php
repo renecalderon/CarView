@@ -268,11 +268,58 @@
                         </form>
                     </div>
 
-                    @if ($propuestas > 0)
+                    @if ($numPropuestas > 0)
                         <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
-                            @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
-                                {{$propuesta}}
-                            @endforeach
+                            <div class="table-responsive" @if ($numPropuestas == 1) style="min-height:130px;" @endif >
+                                <table class="table m-0 table-sm" >
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>P</th>
+                                            <th>Descripcion</th>
+                                            <th class="text-right">Total</th>
+                                            <th></th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $index => $propuesta)
+                                            <tr>
+                                                <td class='align-middle'>{{ $loop->iteration }}</td>
+                                                <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
+                                                <td class='align-middle'>
+                                                    <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
+                                                </td>
+                                                <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
+                                                <td class='align-middle'>
+                                                    @foreach ($semaforos as $semaforo)
+                                                        @if ($propuesta->semaforo_id == $semaforo->id)
+                                                            <i class="nav-icon far fa-circle fa-2x text-{{$semaforo->colorname}}"></i>
+                                                        @endif
+                                                    @endforeach
+
+                                                </td>
+                                                <td class='align-middle'>
+
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-traffic-light"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            @foreach ($semaforos as $semaforo)
+                                                                <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="update_semaforo({{$propuesta->id}}, {{$semaforo->id}})"><i class="nav-icon far fa-circle text-{{$semaforo->colorname}}"></i> {{$semaforo->nombre}} </a>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -280,7 +327,7 @@
 
             <div class="modal-footer">
                 <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                {{-- <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button> --}}
             </div>
         </div>
     </div>

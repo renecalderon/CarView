@@ -216,6 +216,11 @@ class Tecnicos extends Component
 
     public function update()
     {
+        /* $propuesta = Propuesta::find($propuesta_id);
+        $propuesta->update([
+            'semaforo_id' => $semaforo_id,
+        ]); */
+
         foreach ($this->propuestas as $id => $valor) {
             $propuesta = Propuesta::find($id);
             if (!empty($valor['nombre_propuesta'])) {
@@ -229,6 +234,18 @@ class Tecnicos extends Component
                 ]);
             }
         }
+
+        $this->resetInput();
+        $this->updateMode = false;
+        session()->flash('message', 'Descripcion de propuesta actualizada.');
+    }
+
+    public function update_semaforo($propuesta_id, $semaforo_id)
+    {
+        $propuesta = Propuesta::find($propuesta_id);
+        $propuesta->update([
+            'semaforo_id' => $semaforo_id,
+        ]);
 
         $this->resetInput();
         $this->updateMode = false;
