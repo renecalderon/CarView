@@ -41,4 +41,6 @@ Route::get('/bemvindos', function(){
     Route::view('empresas', 'livewire.empresas.index')->middleware('can:empresas.index');
     Route::view('marcas', 'livewire.marcas.index')->middleware('can:empresas.index');
     Route::view('talleres', 'livewire.talleres.index')->middleware('can:empresas.index');
+    
+    Route::view('asesores', 'livewire.asesores.index')->middleware('can:empresas.index');
 

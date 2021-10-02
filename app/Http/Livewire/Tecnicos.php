@@ -216,11 +216,6 @@ class Tecnicos extends Component
 
     public function update()
     {
-        /* $propuesta = Propuesta::find($propuesta_id);
-        $propuesta->update([
-            'semaforo_id' => $semaforo_id,
-        ]); */
-
         foreach ($this->propuestas as $id => $valor) {
             $propuesta = Propuesta::find($id);
             if (!empty($valor['nombre_propuesta'])) {

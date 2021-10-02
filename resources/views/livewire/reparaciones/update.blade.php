@@ -4,21 +4,21 @@
         <div class="modal-content">
 
             <div class="card-header p-0 pt-1 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <ul class="nav nav-tabs" id="custom-tabs-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-three-reparacion-tab" data-toggle="pill" href="#custom-tabs-three-reparacion" role="tab" aria-controls="custom-tabs-three-reparacion" aria-selected="true">Orden de Servicio</a>
+                        <a class="nav-link active" id="custom-tabs-reparacion-tab" data-toggle="pill" href="#custom-tabs-reparacion" role="tab" aria-controls="custom-tabs-reparacion" aria-selected="true">Referencia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-cliente-tab" data-toggle="pill" href="#custom-tabs-three-cliente" role="tab" aria-controls="custom-tabs-three-cliente" aria-selected="false">Cliente</a>
+                        <a class="nav-link" id="custom-tabs-cliente-tab" data-toggle="pill" href="#custom-tabs-cliente" role="tab" aria-controls="custom-tabs-cliente" aria-selected="false">Cliente</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-vehiculo-tab" data-toggle="pill" href="#custom-tabs-three-vehiculo" role="tab" aria-controls="custom-tabs-three-vehiculo" aria-selected="false">Vehiculo</a>
+                        <a class="nav-link" id="custom-tabs-vehiculo-tab" data-toggle="pill" href="#custom-tabs-vehiculo" role="tab" aria-controls="custom-tabs-vehiculo" aria-selected="false">Vehiculo</a>
                     </li>
-                    @if($propuestas > 0)
+                    @if($numPropuestas > 0)
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-propuesta-tab" data-toggle="pill" href="#custom-tabs-three-propuesta" role="tab" aria-controls="custom-tabs-three-propuesta" aria-selected="false">Propuestas
+                        <a class="nav-link" id="custom-tabs-propuesta-tab" data-toggle="pill" href="#custom-tabs-propuesta" role="tab" aria-controls="custom-tabs-propuesta" aria-selected="false">Propuestas
                             <span class="badge bg-danger">
-                                {{$propuestas}}
+                                {{$numPropuestas}}
                             </span>
                         </a>
                     </li>
@@ -26,8 +26,8 @@
                 </ul>
             </div>
             <div class="card-body">
-                <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-three-reparacion" role="tabpanel" aria-labelledby="custom-tabs-three-reparacion-tab">
+                <div class="tab-content" id="custom-tabs-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-reparacion" role="tabpanel" aria-labelledby="custom-tabs-reparacion-tab">
                         <form>
                             <input type="hidden" wire:model.defer="selected_id">
 
@@ -102,7 +102,7 @@
 
                         </form>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-three-cliente" role="tabpanel" aria-labelledby="custom-tabs-three-cliente-tab">
+                    <div class="tab-pane fade" id="custom-tabs-cliente" role="tabpanel" aria-labelledby="custom-tabs-cliente-tab">
                         <form>
                             <input type="hidden" wire:model.defer="selected_id">
                             <div class="form-group row">
@@ -187,7 +187,7 @@
 
                         </form>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-three-vehiculo" role="tabpanel" aria-labelledby="custom-tabs-three-vehiculo-tab">
+                    <div class="tab-pane fade" id="custom-tabs-vehiculo" role="tabpanel" aria-labelledby="custom-tabs-vehiculo-tab">
                         <form>
                             <input type="hidden" wire:model.defer="selected_id">
 
@@ -269,7 +269,7 @@
                     </div>
 
                     @if ($numPropuestas > 0)
-                        <div class="tab-pane fade" id="custom-tabs-three-propuesta" role="tabpanel" aria-labelledby="custom-tabs-three-propuesta-tab">
+                        <div class="tab-pane fade" id="custom-tabs-propuesta" role="tabpanel" aria-labelledby="custom-tabs-propuesta-tab">
                             <div class="table-responsive" @if ($numPropuestas == 1) style="min-height:130px;" @endif >
                                 <table class="table m-0 table-sm" >
                                     <thead>
@@ -279,8 +279,6 @@
                                             <th>Descripcion</th>
                                             <th class="text-right">Total</th>
                                             <th></th>
-                                            <th></th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -288,36 +286,19 @@
                                             <tr>
                                                 <td class='align-middle'>{{ $loop->iteration }}</td>
                                                 <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
-                                                <td class='align-middle'>
-                                                    <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
-                                                </td>
+                                                <td class='align-middle'>{{$propuesta->nombre_propuesta}}</td>
                                                 <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
                                                 <td class='align-middle'>
                                                     @foreach ($semaforos as $semaforo)
                                                         @if ($propuesta->semaforo_id == $semaforo->id)
-                                                            <i class="nav-icon far fa-circle fa-2x text-{{$semaforo->colorname}}"></i>
+                                                            <i class="nav-icon far fa-circle fa-1x text-{{$semaforo->colorname}}"></i>
                                                         @endif
                                                     @endforeach
-
                                                 </td>
-                                                <td class='align-middle'>
 
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fa fa-traffic-light"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            @foreach ($semaforos as $semaforo)
-                                                                <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="update_semaforo({{$propuesta->id}}, {{$semaforo->id}})"><i class="nav-icon far fa-circle text-{{$semaforo->colorname}}"></i> {{$semaforo->nombre}} </a>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>
@@ -326,8 +307,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                {{-- <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button> --}}
+                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-save"></i> Guardar</button>
             </div>
         </div>
     </div>

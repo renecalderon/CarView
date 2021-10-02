@@ -105,32 +105,11 @@
                                                         @foreach ($semaforos as $semaforo)
                                                             @if ($propuesta->semaforo_id == $semaforo->id)
                                                                 <i class="nav-icon far fa-circle fa-2x text-{{$semaforo->colorname}}"></i>
-                                                                {{-- <i class="fas fa-circle fa-2x text-{{$semaforo->colorname}}"></i> --}}
-                                                                {{-- <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                                                                    <ul class="fc-color-picker" id="color-chooser">
-                                                                        <li><a class="text-{{$semaforo->colorname}}" href="#"><i class="fas fa-square"></i></a></li>
-                                                                    </ul>
-                                                                </div> --}}
                                                             @endif
                                                         @endforeach
 
                                                     </td>
                                                     <td class='align-middle'>
-
-                                                        {{-- <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo_id" name="semaforo_id">
-                                                            <option value="">Seleccione...</option>
-                                                            @foreach ($semaforos as $semaforo)
-                                                                <option value="{{$semaforo->id}}"
-                                                                    @if ($propuesta->semaforo_id == $semaforo->id)
-                                                                        {{'selected="selected"'}}
-                                                                    @endif >
-                                                                    {{$propuesta->semaforo_id}}|{{$semaforo->id}}-
-                                                                    {{$semaforo->nombre}}
-                                                                </option>
-                                                            @endforeach
-
-                                                        </select> --}}
-
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <i class="fa fa-traffic-light"></i>
@@ -141,14 +120,6 @@
                                                                 @endforeach
                                                             </div>
                                                         </div>
-
-                                                        {{-- <select wire:model.defer="propuestas.{{$propuesta->id}}.semaforo_id" class="form-control" id="semaforo" name="semaforo">
-                                                            <option value="">Elegir...</option>
-                                                            @foreach ($semaforos as $semaforo)
-                                                                <option value="{{$semaforo->id}}" class="text-{{$semaforo->colorname}}">{{$semaforo->nombre}} </option>
-                                                            @endforeach
-                                                        </select> --}}
-
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -164,8 +135,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar</button>
+                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-save"></i> Guardar</button>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ use App\Models\Propuesta;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Reparacion;
+use App\Models\Semaforo;
 use App\Models\Taller;
 use App\Models\Tipo;
 use App\Models\User;
@@ -29,7 +30,8 @@ class Reparaciones extends Component
     public $nombre, $apellidopaterno, $apellidomaterno, $email, $celular;
     public $vin, $matricula, $familia, $modelo, $color, $anio, $marca_id, $cliente_id;
     public $comentarios;
-    public $propuestas;
+    public $numPropuestas;
+    public $semaforos;
     public $updateMode = false;
 
 
@@ -101,6 +103,8 @@ class Reparaciones extends Component
         $this->anio = null;
 
         $this->comentarios = null;
+
+        $this->numPropuestas = null;
     }
 
     public function store()
@@ -147,7 +151,9 @@ class Reparaciones extends Component
 
         $this->comentarios = Comentario::where('reparacion_id', '=', $this->selected_id)->orderBy('created_at', 'DESC')->get();
 
-        $this->propuestas = Propuesta::where('reparacion_id', $id)->count();
+        $this->numPropuestas = Propuesta::where('reparacion_id', $this->selected_id)->count();
+
+        $this->semaforos = Semaforo::all();
 
         $this->updateMode = true;
     }

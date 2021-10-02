@@ -60,7 +60,7 @@
                                     </td>
                                     <td class='align-middle' width="90">
                                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateModal" wire:click="edit({{$row->id}})">
-                                            <i class="fa fa-edit"> Editar</i>
+                                            <i class="fa fa-edit"></i> Editar
                                         </button>
                                     </td>
                                 </tr>
