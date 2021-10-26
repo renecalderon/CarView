@@ -3,11 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cliente;
-use App\Models\Estado;
 use App\Models\Marca;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Reparacion;
+use App\Models\Situacione;
 use App\Models\Taller;
 use App\Models\User;
 use App\Models\Vehiculo;
@@ -22,9 +22,8 @@ class Citas extends Component
     use WithFileUploads;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $referencia, $descripcion, $fechacita, $tiempoestimado, $fechaingreso, $fechafin, $fechaentrega, $codigodmsasesorservicio, $codigodmsoperadortecnico, $matriculatemporal, $user_id, $estado_id, $vehiculo_id, $taller_id, $tipo_id, $file;
+    public $selected_id, $keyWord, $referencia, $descripcion, $fechacita, $tiempoestimado, $fechaingreso, $fechafin, $fechaentrega, $codigodmsasesorservicio, $codigodmsoperadortecnico, $matriculatemporal, $user_id, $situacion_id, $vehiculo_id, $taller_id, $tipo_id, $file;
     public $updateMode = false;
-
 
     public function render()
     {
@@ -70,7 +69,7 @@ class Citas extends Component
 		$this->codigodmsoperadortecnico = null;
 		$this->matriculatemporal = null;
 		$this->user_id = null;
-		$this->estado_id = null;
+		$this->situacion_id = null;
 		$this->vehiculo_id = null;
 		$this->taller_id = null;
 		$this->tipo_id = null;
@@ -164,8 +163,8 @@ class Citas extends Component
 
                     $reparacion->user_id = auth()->id();
 
-                    $estado = Estado::where('nombre', "CITA")->first();
-                    $reparacion->estado_id = $estado->id;
+                    $situacion = Situacione::where('nombre', "CITA")->first();
+                    $reparacion->situacion_id = $situacion->id;
 
                     $vehiculo = Vehiculo::where('vin', $citas[$i]['10'])->first();
                     $reparacion->vehiculo_id = $vehiculo->id;

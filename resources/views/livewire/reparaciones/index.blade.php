@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                @livewire('reparaciones')
+                @livewire('reparaciones.view')
             </div>
         </div>
     </div>
@@ -21,14 +21,5 @@
 @stop
 
 @section('js')
-    <script type="text/javascript">
-        window.livewire.on('closeModal', () => {
-            $('#exampleModal').modal('hide');
-        });
-    </script>
-    <script>
-        $(function () {
-            bsCustomFileInput.init();
-        });
-    </script>
+
 @stop

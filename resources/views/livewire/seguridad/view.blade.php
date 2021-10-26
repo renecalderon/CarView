@@ -18,7 +18,7 @@
 
                     <form wire:submit.prevent="submit">
                         <div class="form-group">
-                            <input type="text" class="form-control text-center" id="matricula" placeholder="Ingrese matricula" wire:model="matricula">
+                            <input type="text" class="form-control text-center" id="matricula" placeholder="Ingrese matricula" wire:model="matricula" autocomplete="off">
                             @error('matricula') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <button type="submit" class="btn btn-lg btn-block btn-primary"><i class="fas fa-shield-alt"></i> Registrar Cita</button>

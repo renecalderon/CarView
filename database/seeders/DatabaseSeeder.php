@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SucursalSeeder::class,
             MarcaSeeder::class,
             EstadoSeeder::class,
+            SituacionSeeder::class,
             TipoSeeder::class,
             TallerSeeder::class,
             //ClienteSeeder::class,
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             //ReparacionSeeder::class,
             SemaforoSeeder::class,
+            //StatusSeeder::class,
         ]);
     }
 }

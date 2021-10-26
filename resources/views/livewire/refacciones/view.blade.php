@@ -30,7 +30,7 @@
                         <table class="table table-sm">
                             <thead class="thead">
                                 <tr>
-                                    <td class='align-middle'>#</td>
+                                    <th class='align-middle'>#</th>
                                     <th class='align-middle'>Referencia</th>
                                     <th class='align-middle'>Cliente</th>
                                     <th class='align-middle'>VIN</th>

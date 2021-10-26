@@ -7,11 +7,6 @@ use Illuminate\Database\Seeder;
 
 class SemaforoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Semaforo::create([
@@ -32,7 +27,7 @@ class SemaforoSeeder extends Seeder
             'nombre' => 'Recomendado',
             'descripcion' => 'Descripcion de recomendacion',
             'color' => '#6495ED',
-            'colorname' => 'info',
+            'colorname' => 'success',
         ]);
     }
 }

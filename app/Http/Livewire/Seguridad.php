@@ -3,8 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Comentario;
-use App\Models\Estado;
 use App\Models\Reparacion;
+use App\Models\Situacione;
 use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -70,13 +70,13 @@ class Seguridad extends Component
         if (!empty($reparacion)) {
             if (empty($reparacion->fechaingreso)) {
 
-                if ($reparacion->estado_id == '1' || empty($reparacion->estado_id)) {
-                    $estado = Estado::where('nombre', 'ARRIBO')->first();
+                if ($reparacion->situacion_id == '1' || empty($reparacion->situacion_id)) {
+                    $situacion = Situacione::where('nombre', 'ARRIBO')->first();
 
-                    $reparacion->estado_id = $estado->id;
+                    $reparacion->situacion_id = $situacion->id;
                     $comentario = new Comentario();
                     $comentario->tipo = 'seguridad';
-                    $comentario->comentario = $estado->descripcion;
+                    $comentario->comentario = $situacion->descripcion;
                     $comentario->reparacion_id = $reparacion->id;
                     $comentario->user_id = auth()->id();
                     $comentario->save();
@@ -97,17 +97,17 @@ class Seguridad extends Component
                 $mensaje = "Matricula registrada: $placa";
             }
 
-            $estado = Estado::where('nombre', 'ARRIBO')->first();
+            $situacion = Situacione::where('nombre', 'ARRIBO')->first();
 
             $reparacion->descripcion = "Cliente sin Cita";
             $reparacion->fechaingreso = date('Y-m-d h:i:s');
             $reparacion->user_id = auth()->id();
-            $reparacion->estado_id = $estado->id;
+            $reparacion->situacion_id = $situacion->id;
             $reparacion->save();
 
             $comentario = new Comentario();
             $comentario->tipo = 'seguridad';
-            $comentario->comentario = $estado->descripcion;
+            $comentario->comentario = $situacion->descripcion;
             $comentario->reparacion_id = $reparacion->id;
             $comentario->user_id = auth()->id();
             $comentario->save();

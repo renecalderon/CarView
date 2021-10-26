@@ -13,7 +13,7 @@ class Reparacion extends Model
 
     protected $table = 'reparaciones';
 
-    protected $fillable = ['referencia','descripcion','fechacita','tiempoestimado','fechaingreso','fechafin','fechaentrega','codigodmsasesorservicio','codigodmsoperadortecnico','matriculatemporal','user_id','estado_id','vehiculo_id','taller_id','tipo_id'];
+    protected $fillable = ['referencia','descripcion','fechacita','tiempoestimado','fechaingreso','fechafin','fechaentrega','codigodmsasesorservicio','codigodmsoperadortecnico','matriculatemporal','user_id','situacion_id','vehiculo_id','taller_id','tipo_id'];
 
     public function tiempos()
     {
@@ -25,9 +25,9 @@ class Reparacion extends Model
         return $this->hasMany('App\Models\Comentario', 'reparacion_id', 'id');
     }
 
-    public function estado()
+    public function situacion()
     {
-        return $this->hasOne('App\Models\Estado', 'id', 'estado_id');
+        return $this->hasOne('App\Models\Situacione', 'id', 'situacion_id');
     }
 
     public function propuestas()

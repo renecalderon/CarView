@@ -19,9 +19,9 @@ class Empresas extends Component
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.empresas.view', [
             'empresas' => Empresa::latest()
-						->orWhere('rfc', 'LIKE', $keyWord)
-						->orWhere('razonsocial', 'LIKE', $keyWord)
-						->paginate(10),
+                ->orWhere('rfc', 'LIKE', $keyWord)
+                ->orWhere('razonsocial', 'LIKE', $keyWord)
+                ->paginate(10),
         ]);
     }
 

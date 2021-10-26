@@ -37,6 +37,18 @@
                     <ul class="navbar-nav mr-auto">
 						<!--Nav Bar Hooks - Do not delete!!-->
 						<li class="nav-item">
+                            <a href="{{ url('/estados') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Estados</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/situaciones') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Situaciones</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/categorias') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Categorias</a> 
+                        </li>
+						<li class="nav-item">
+                            <a href="{{ url('/status') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Status</a> 
+                        </li>
+						<li class="nav-item">
                             <a href="{{ url('/semaforos') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Semaforos</a> 
                         </li>
 						<li class="nav-item">

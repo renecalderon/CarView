@@ -98,13 +98,13 @@
                                                     <td class='align-middle'>{{ $loop->iteration }}</td>
                                                     <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank"><i class="fas fa-file-pdf"></i></a></td>
                                                     <td class='align-middle'>
-                                                        <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
+                                                        <textarea id="{{$propuesta->id}}" wire:model.defer="propuestas.{{$propuesta->id}}.nombre_propuesta" onkeyup="this.value = this.value.toUpperCase();" class="form-control" placeholder="{{$propuesta->nombre_propuesta}}" rows="1"></textarea>
                                                     </td>
                                                     <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
                                                     <td class='align-middle'>
                                                         @foreach ($semaforos as $semaforo)
                                                             @if ($propuesta->semaforo_id == $semaforo->id)
-                                                                <i class="nav-icon far fa-circle fa-2x text-{{$semaforo->colorname}}"></i>
+                                                                <i class="nav-icon fas fa-record-vinyl fa-2x text-{{$semaforo->colorname}}"></i>
                                                             @endif
                                                         @endforeach
 
@@ -116,7 +116,7 @@
                                                             </button>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 @foreach ($semaforos as $semaforo)
-                                                                    <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="update_semaforo({{$propuesta->id}}, {{$semaforo->id}})"><i class="nav-icon far fa-circle text-{{$semaforo->colorname}}"></i> {{$semaforo->nombre}} </a>
+                                                                    <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="update_semaforo({{$propuesta->id}}, {{$semaforo->id}})"><i class="nav-icon fas fa-record-vinyl text-{{$semaforo->colorname}}"></i> {{$semaforo->nombre}} </a>
                                                                 @endforeach
                                                             </div>
                                                         </div>

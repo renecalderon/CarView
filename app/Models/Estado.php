@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estado extends Model
 {
-    use HasFactory;
+	use HasFactory;
+	
+    public $timestamps = true;
 
     protected $table = 'estados';
 
-    protected $fillable = ['nombre', 'descripcion'];
+    protected $fillable = ['nombre','descripcion','color','colorname'];
+	
 }

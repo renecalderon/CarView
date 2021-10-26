@@ -18,6 +18,7 @@ class CreatePropuestasTable extends Migration
             $table->string('nombre_propuesta');
             $table->string('vin')->nullable();
             $table->string('total')->nullable();
+            $table->string('manodeobra')->nullable();
             $table->string('filename')->nullable();
             $table->string('path')->nullable();
             $table->string('hashfile')->nullable();
@@ -26,8 +27,8 @@ class CreatePropuestasTable extends Migration
             $table->unsignedBigInteger('reparacion_id');
             $table->foreign('reparacion_id')->references('id')->on('reparaciones');
 
-            $table->unsignedBigInteger('status_id')->nullable();
-            $table->foreign('status_id')->references('id')->on('status');
+            $table->unsignedBigInteger('estado_id')->nullable();
+            $table->foreign('estado_id')->references('id')->on('estados');
 
             $table->unsignedBigInteger('semaforo_id')->nullable();
             $table->foreign('semaforo_id')->references('id')->on('semaforos');

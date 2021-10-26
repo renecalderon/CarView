@@ -9,6 +9,7 @@ use App\Models\Marca;
 use App\Models\Propuesta;
 use App\Models\Reparacion;
 use App\Models\Semaforo;
+use App\Models\Situacione;
 use App\Models\Tiempo;
 use App\Models\Tipo;
 use App\Models\User;
@@ -158,7 +159,7 @@ class Tecnicos extends Component
 
         $this->numPropuestas = Propuesta::where('reparacion_id', $id)->count();
 
-        $status = Estado::find($record->estado_id);
+        $status = Situacione::find($record->situacion_id);
         $this->estado = $status->nombre;
 
         $this->semaforos = Semaforo::all();

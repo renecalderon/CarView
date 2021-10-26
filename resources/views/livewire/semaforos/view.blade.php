@@ -7,7 +7,7 @@
 					<div style="display: flex; justify-content: space-between; align-items: center;">
 						<div class="float-left">
 							<h4><i class="fab fa-laravel text-info"></i>
-							Semaforo Listing </h4>
+							Lista de Semaforos </h4>
 						</div>
 						<div wire:poll.60s>
 							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
@@ -23,15 +23,15 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="card-body">
 						@include('livewire.semaforos.create')
 						@include('livewire.semaforos.update')
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
-							<tr> 
-								<td>#</td> 
+							<tr>
+								<td>#</td>
 								<th>Nombre</th>
 								<th>Descripcion</th>
 								<td>ACTIONS</td>
@@ -40,7 +40,7 @@
 						<tbody>
 							@foreach($semaforos as $row)
 							<tr>
-								<td>{{ $loop->iteration }}</td> 
+								<td>{{ $loop->iteration }}</td>
 								<td>{{ $row->nombre }}</td>
 								<td>{{ $row->descripcion }}</td>
 								<td width="90">
@@ -49,14 +49,14 @@
 									Actions
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
-									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Edit </a>							 
-									<a class="dropdown-item" onclick="confirm('Confirm Delete Semaforo id {{$row->id}}? \nDeleted Semaforos cannot be recovered!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Delete </a>   
+									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Edit </a>
+									<a class="dropdown-item" onclick="confirm('Confirm Delete Semaforo id {{$row->id}}? \nDeleted Semaforos cannot be recovered!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Delete </a>
 									</div>
 								</div>
 								</td>
 							@endforeach
 						</tbody>
-					</table>						
+					</table>
 					{{ $semaforos->links() }}
 					</div>
 				</div>

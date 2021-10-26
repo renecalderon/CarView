@@ -30,8 +30,8 @@ class CreateReparacionesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('estado_id')->nullable();
-            $table->foreign('estado_id')->references('id')->on('estados');
+            $table->unsignedBigInteger('situacion_id')->nullable();
+            $table->foreign('situacion_id')->references('id')->on('situaciones');
 
             $table->unsignedBigInteger('vehiculo_id')->nullable();
             $table->foreign('vehiculo_id')->references('id')->on('vehiculos');

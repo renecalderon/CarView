@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ReparacionController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\WelcomeMailable;
 use Illuminate\Support\Facades\Mail;
@@ -26,6 +27,11 @@ Route::get('/bemvindos', function(){
 });
 
 //Route Hooks - Do not delete//
+	Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('auth');
+	Route::view('estados', 'livewire.estados.index')->middleware('auth');
+	Route::view('situaciones', 'livewire.situaciones.index')->middleware('auth');
+	Route::view('categorias', 'livewire.categorias.index')->middleware('auth');
+	Route::view('status', 'livewire.status.index')->middleware('auth');
 	Route::view('semaforos', 'livewire.semaforos.index')->middleware('auth');
 	//Route::view('refacciones', 'livewire.refacciones.index')->middleware('auth');
 	Route::view('propuestas', 'livewire.propuestas.index')->middleware('auth');
@@ -35,12 +41,12 @@ Route::get('/bemvindos', function(){
     Route::view('tecnicos', 'livewire.tecnicos.index')->middleware('can:tecnicos.index');
     Route::view('seguridad', 'livewire.seguridad.index')->middleware('can:seguridad.index');
     Route::view('citas', 'livewire.citas.index')->middleware('can:citas.index');
-	Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('can:reparaciones.index');
+//	Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('can:reparaciones.index');
 	Route::view('users', 'livewire.users.index')->middleware('can:sucursales.index');
 	Route::view('sucursales', 'livewire.sucursales.index')->middleware('can:sucursales.index');
     Route::view('empresas', 'livewire.empresas.index')->middleware('can:empresas.index');
     Route::view('marcas', 'livewire.marcas.index')->middleware('can:empresas.index');
     Route::view('talleres', 'livewire.talleres.index')->middleware('can:empresas.index');
-    
-    Route::view('asesores', 'livewire.asesores.index')->middleware('can:empresas.index');
+
+    Route::resource('reparaciones', ReparacionController::class)->names('admin.reparaciones')->middleware('can:reparaciones.index');
 

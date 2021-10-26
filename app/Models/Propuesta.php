@@ -13,7 +13,7 @@ class Propuesta extends Model
 
     protected $table = 'propuestas';
 
-    protected $fillable = ['nombre_propuesta', 'vin', 'total', 'filename', 'path', 'hashfile', 'reparacion_id','status_id','semaforo_id'];
+    protected $fillable = ['nombre_propuesta', 'vin', 'total', 'manodeobra', 'filename', 'path', 'hashfile', 'reparacion_id','estado_id','semaforo_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -50,9 +50,9 @@ class Propuesta extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function status()
+    public function estado()
     {
-        return $this->hasOne('App\Models\Status', 'id', 'status_id');
+        return $this->hasOne('App\Models\Estado', 'id', 'estado_id');
     }
 
     /**

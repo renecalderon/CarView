@@ -73,7 +73,9 @@
                                         <td class='align-middle'>{{$propuesta->nombre_propuesta}}</td>
                                         <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
                                         <td class='align-middle'>
-                                            <button type="button" class="btn btn-danger btn-sm float-right" onclick="confirm('Confirmar eliminacion de propuesta? \nNo se podra deshacer!')||event.stopImmediatePropagation()" wire:click="destroy({{$propuesta->id}})"><i class="fas fa-trash"></i></button>
+                                            @if ($propuesta->status_id === NULL)
+                                                <button type="button" class="btn btn-danger btn-sm float-right" onclick="confirm('Confirmar eliminacion de propuesta? \nNo se podra deshacer!')||event.stopImmediatePropagation()" wire:click="destroy({{$propuesta->id}})"><i class="fas fa-trash"></i></button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
