@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Reparacion;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Reparacione;
 
 class Reparaciones extends Component
 {
@@ -18,34 +18,34 @@ class Reparaciones extends Component
     {
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.reparaciones.view', [
-            'reparaciones' => Reparacione::latest()
-						->orWhere('referencia', 'LIKE', $keyWord)
-						->orWhere('descripcion', 'LIKE', $keyWord)
-						->orWhere('fechacita', 'LIKE', $keyWord)
-						->orWhere('tiempoestimado', 'LIKE', $keyWord)
-						->orWhere('fechaingreso', 'LIKE', $keyWord)
-						->orWhere('fechafin', 'LIKE', $keyWord)
-						->orWhere('fechaentrega', 'LIKE', $keyWord)
-						->orWhere('codigodmsasesorservicio', 'LIKE', $keyWord)
-						->orWhere('codigodmsoperadortecnico', 'LIKE', $keyWord)
-						->orWhere('matriculatemporal', 'LIKE', $keyWord)
-						->orWhere('user_id', 'LIKE', $keyWord)
-						->orWhere('situacion_id', 'LIKE', $keyWord)
-						->orWhere('vehiculo_id', 'LIKE', $keyWord)
-						->orWhere('taller_id', 'LIKE', $keyWord)
-						->orWhere('tipo_id', 'LIKE', $keyWord)
-						->paginate(10),
+            'reparaciones' => Reparacion::latest()
+                ->orWhere('referencia', 'LIKE', $keyWord)
+                ->orWhere('descripcion', 'LIKE', $keyWord)
+                ->orWhere('fechacita', 'LIKE', $keyWord)
+                ->orWhere('tiempoestimado', 'LIKE', $keyWord)
+                ->orWhere('fechaingreso', 'LIKE', $keyWord)
+                ->orWhere('fechafin', 'LIKE', $keyWord)
+                ->orWhere('fechaentrega', 'LIKE', $keyWord)
+                ->orWhere('codigodmsasesorservicio', 'LIKE', $keyWord)
+                ->orWhere('codigodmsoperadortecnico', 'LIKE', $keyWord)
+                ->orWhere('matriculatemporal', 'LIKE', $keyWord)
+                ->orWhere('user_id', 'LIKE', $keyWord)
+                ->orWhere('situacion_id', 'LIKE', $keyWord)
+                ->orWhere('vehiculo_id', 'LIKE', $keyWord)
+                ->orWhere('taller_id', 'LIKE', $keyWord)
+                ->orWhere('tipo_id', 'LIKE', $keyWord)
+                ->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->referencia = null;
 		$this->descripcion = null;
 		$this->fechacita = null;
@@ -70,7 +70,7 @@ class Reparaciones extends Component
 		'user_id' => 'required',
         ]);
 
-        Reparacione::create([ 
+        Reparacion::create([
 			'referencia' => $this-> referencia,
 			'descripcion' => $this-> descripcion,
 			'fechacita' => $this-> fechacita,
@@ -87,7 +87,7 @@ class Reparaciones extends Component
 			'taller_id' => $this-> taller_id,
 			'tipo_id' => $this-> tipo_id
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
 		session()->flash('message', 'Reparacione Successfully created.');
@@ -95,9 +95,9 @@ class Reparaciones extends Component
 
     public function edit($id)
     {
-        $record = Reparacione::findOrFail($id);
+        $record = Reparacion::find($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->referencia = $record-> referencia;
 		$this->descripcion = $record-> descripcion;
 		$this->fechacita = $record-> fechacita;
@@ -113,7 +113,7 @@ class Reparaciones extends Component
 		$this->vehiculo_id = $record-> vehiculo_id;
 		$this->taller_id = $record-> taller_id;
 		$this->tipo_id = $record-> tipo_id;
-		
+
         $this->updateMode = true;
     }
 
@@ -125,8 +125,8 @@ class Reparaciones extends Component
         ]);
 
         if ($this->selected_id) {
-			$record = Reparacione::find($this->selected_id);
-            $record->update([ 
+			$record = Reparacion::find($this->selected_id);
+            $record->update([
 			'referencia' => $this-> referencia,
 			'descripcion' => $this-> descripcion,
 			'fechacita' => $this-> fechacita,
@@ -153,7 +153,7 @@ class Reparaciones extends Component
     public function destroy($id)
     {
         if ($id) {
-            $record = Reparacione::where('id', $id);
+            $record = Reparacion::where('id', $id);
             $record->delete();
         }
     }

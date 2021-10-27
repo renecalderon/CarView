@@ -9,7 +9,7 @@ use App\Models\Marca;
 use App\Models\Propuesta;
 use App\Models\Reparacion;
 use App\Models\Semaforo;
-use App\Models\Situacione;
+use App\Models\Situacion;
 use App\Models\Status;
 use App\Models\Tipo;
 use App\Models\User;
@@ -26,7 +26,7 @@ class ReparacionController extends Controller
     public function create()
     {
         $tipos = Tipo::all();
-        $situaciones = Situacione::all();
+        $situaciones = Situacion::all();
         $marcas = Marca::all();
 
 
@@ -74,7 +74,7 @@ class ReparacionController extends Controller
         //$cliente = Cliente::find($vehiculo->cliente_id);
 
         $tipos = Tipo::all();
-        $situaciones = Situacione::all();
+        $situaciones = Situacion::all();
         $marcas = Marca::all();
         $semaforos = Semaforo::all();
         $estados = Estado::all();

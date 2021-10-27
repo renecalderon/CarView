@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Situacione;
+use App\Models\Situacion;
 
 class Situaciones extends Component
 {
@@ -18,21 +18,21 @@ class Situaciones extends Component
     {
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.situaciones.view', [
-            'situaciones' => Situacione::latest()
+            'situaciones' => Situacion::latest()
 						->orWhere('nombre', 'LIKE', $keyWord)
 						->orWhere('descripcion', 'LIKE', $keyWord)
 						->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->nombre = null;
 		$this->descripcion = null;
     }
@@ -44,24 +44,24 @@ class Situaciones extends Component
 		'descripcion' => 'required',
         ]);
 
-        Situacione::create([ 
+        Situacion::create([
 			'nombre' => $this-> nombre,
 			'descripcion' => $this-> descripcion
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
-		session()->flash('message', 'Situacione Successfully created.');
+		session()->flash('message', 'Situacion Successfully created.');
     }
 
     public function edit($id)
     {
-        $record = Situacione::findOrFail($id);
+        $record = Situacion::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->nombre = $record-> nombre;
 		$this->descripcion = $record-> descripcion;
-		
+
         $this->updateMode = true;
     }
 
@@ -73,22 +73,22 @@ class Situaciones extends Component
         ]);
 
         if ($this->selected_id) {
-			$record = Situacione::find($this->selected_id);
-            $record->update([ 
+			$record = Situacion::find($this->selected_id);
+            $record->update([
 			'nombre' => $this-> nombre,
 			'descripcion' => $this-> descripcion
             ]);
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Situacione Successfully updated.');
+			session()->flash('message', 'Situacion Successfully updated.');
         }
     }
 
     public function destroy($id)
     {
         if ($id) {
-            $record = Situacione::where('id', $id);
+            $record = Situacion::where('id', $id);
             $record->delete();
         }
     }

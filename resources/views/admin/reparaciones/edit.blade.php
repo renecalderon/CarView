@@ -126,14 +126,21 @@
                             @csrf
                             @method('PUT')
 
-                            @if ($propuestas->count() >= 1)
+                            {{-- @if ($propuestas->count() >= 1) --}}
                                 <div class="card card-primary card-outline">
                                     <div class="card-header">
-                                        <h3 class="card-title">
-                                            <i class="fas fa-tools text-danger"></i> Propuestas
-                                        </h3>
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <h3 class="card-title">
+                                                <i class="fas fa-tools text-danger"></i> Propuestas
+                                            </h3>
+                                            <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
+                                                <i class="fa fa-plus"></i>  Importar Propuesta
+                                            </div>
+                                        </div>
                                     </div>
+                                    @if ($propuestas->count() >= 1)
                                     <div class="card-body">
+
                                         <table class="table table-sm">
                                             <thead>
                                                 <tr>
@@ -190,9 +197,11 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+
                                     </div>
+                                    @endif
                                 </div>
-                            @endif
+                            {{-- @endif --}}
 
                             <div class="card card-primary card-outline card-outline-tabs">
                                 <div class="card-header p-0 border-bottom-0">
@@ -209,6 +218,7 @@
                                     </ul>
                                 </div>
                                 <div class="card-body">
+
                                     <div class="tab-content" id="custom-tabs-tabContent">
                                         <div class="tab-pane fade show active" id="custom-tabs-reparacion" role="tabpanel" aria-labelledby="custom-tabs-reparacion-tab">
                                             <input type="hidden" id="{{$reparacion->id}}">
@@ -422,6 +432,8 @@
 
             </div>
         </div>
+
+
     </div>
 @stop
 
@@ -430,5 +442,14 @@
 @stop
 
 @section('js')
-
+    <script type="text/javascript">
+        window.livewire.on('closeModal', () => {
+            $('#exampleModal').modal('hide');
+        });
+    </script>
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
 @stop

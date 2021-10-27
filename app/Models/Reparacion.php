@@ -27,7 +27,7 @@ class Reparacion extends Model
 
     public function situacion()
     {
-        return $this->hasOne('App\Models\Situacione', 'id', 'situacion_id');
+        return $this->hasOne('App\Models\Situacion', 'id', 'situacion_id');
     }
 
     public function propuestas()

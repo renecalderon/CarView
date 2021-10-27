@@ -3,6 +3,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
+
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -20,7 +21,7 @@
                                 <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar dato">
                             </div>
                             <div>
-                                <a href="{{route('admin.reparaciones.create')}}" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Orden Nueva</a>
+                                {{-- <a href="{{route('admin.reparaciones.create')}}" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Orden Nueva</a> --}}
                             </div>
                         </div>
                     </div>
@@ -45,7 +46,7 @@
                                 <tbody>
                                     @foreach($reparaciones as $reparacion)
                                         <tr>
-                                            <td class='align-middle'>{{ $loop->iteration }} {{$reparacion->id}}</td>
+                                            <td class='align-middle'>{{ $loop->iteration }}</td>
                                             <td class='align-middle'>{{ $reparacion->referencia }}</td>
                                             <td class='align-middle'>
                                                 {{ $reparacion->vehiculo->cliente->nombre ?? ''}}
@@ -67,11 +68,12 @@
                                                 {{ $reparacion->situacion->nombre ?? '' }}
                                             </td>
                                             <td class='align-middle' width="90">
-                                                @if (empty($reparacion->referencia) && !empty($reparacion->matriculatemporal) )
+                                                <button wire:click="edit({{$reparacion->id}})" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Editar</button>
+                                                {{-- @if (empty($reparacion->referencia) && !empty($reparacion->matriculatemporal) )
                                                     <a href="{{route('admin.reparaciones.edit', $reparacion->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-edit"></i> Editar</a>
                                                 @else
                                                     <a href="{{route('admin.reparaciones.edit', $reparacion->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Editar</a>
-                                                @endif
+                                                @endif --}}
 
                                             </td>
                                         </tr>
