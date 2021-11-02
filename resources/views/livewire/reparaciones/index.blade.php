@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'CarView')
 
 @section('content_header')
 
@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                @livewire('reparaciones.view')
+                @livewire('reparaciones')
             </div>
         </div>
     </div>
@@ -21,5 +21,14 @@
 @stop
 
 @section('js')
-
+{{--     <script type="text/javascript">
+        window.livewire.on('closeModal', () => {
+            $('#exampleModal').modal('hide');
+        });
+    </script>
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+        </script> --}}
 @stop

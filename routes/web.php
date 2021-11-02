@@ -27,6 +27,9 @@ Route::get('/bemvindos', function(){
 });
 
 //Route Hooks - Do not delete//
+	Route::view('talleres', 'livewire.talleres.index')->middleware('auth');
+	Route::view('eventos', 'livewire.eventos.index')->middleware('auth');
+	Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('auth');
 	/* Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('auth'); */
 	Route::view('estados', 'livewire.estados.index')->middleware('auth');
 	Route::view('situaciones', 'livewire.situaciones.index')->middleware('auth');
@@ -41,12 +44,12 @@ Route::get('/bemvindos', function(){
     Route::view('tecnicos', 'livewire.tecnicos.index')->middleware('can:tecnicos.index');
     Route::view('seguridad', 'livewire.seguridad.index')->middleware('can:seguridad.index');
     Route::view('citas', 'livewire.citas.index')->middleware('can:citas.index');
-	Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('can:reparaciones.index');
+	/* Route::view('reparaciones', 'livewire.reparaciones.index')->middleware('can:reparaciones.index'); */
 	Route::view('users', 'livewire.users.index')->middleware('can:sucursales.index');
 	Route::view('sucursales', 'livewire.sucursales.index')->middleware('can:sucursales.index');
     Route::view('empresas', 'livewire.empresas.index')->middleware('can:empresas.index');
     Route::view('marcas', 'livewire.marcas.index')->middleware('can:empresas.index');
-    Route::view('talleres', 'livewire.talleres.index')->middleware('can:empresas.index');
+   /*  Route::view('talleres', 'livewire.talleres.index')->middleware('can:empresas.index'); */
 
     /* Route::resource('reparaciones', ReparacionController::class)->names('admin.reparaciones')->middleware('can:reparaciones.index'); */
 

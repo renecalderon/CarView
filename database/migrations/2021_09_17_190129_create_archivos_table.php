@@ -10,7 +10,13 @@ class CreateArchivosTable extends Migration
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre_propuesta');
+            $table->string('vin')->nullable();
+            $table->string('total')->nullable();
+            $table->decimal('manodeobra')->nullable();
             $table->string('filename');
+            $table->string('path');
+            $table->string('hashfile');
             $table->timestamps();
 
             $table->unsignedBigInteger('propuesta_id');

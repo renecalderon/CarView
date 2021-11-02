@@ -13,6 +13,6 @@ class Situacion extends Model
 
     protected $table = 'situaciones';
 
-    protected $fillable = ['nombre','descripcion'];
+    protected $fillable = ['nombre','descripcion', 'icono','color','colorname'];
 
 }

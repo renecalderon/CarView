@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTalleresTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('talleres', function (Blueprint $table) {
@@ -18,14 +13,12 @@ class CreateTalleresTable extends Migration
             $table->string('numero');
             $table->string('descripcion');
             $table->timestamps();
+
+            $table->unsignedBigInteger('sucursal_id');
+            $table->foreign('sucursal_id')->references('id')->on('sucursales');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('talleres');

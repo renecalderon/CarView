@@ -29,7 +29,7 @@ class Refacciones extends Component
     public $asesorasignado, $tecnicoasignado;
     public $filenames;
     public $datos = [];
-    public $propuestas;
+    public $refacciones;
     public $updateMode = false;
 
     public function render()
@@ -105,7 +105,7 @@ class Refacciones extends Component
         $this->filenames = null;
         $this->datos = null;
 
-        $this->propuestas = null;
+        $this->refacciones = null;
     }
 
     public function store()
@@ -176,7 +176,7 @@ class Refacciones extends Component
             }
         }
 
-        $this->propuestas = Propuesta::where('reparacion_id', $id)->count();
+        $this->refacciones = Refaccion::where('reparacion_id', $id)->count();
 
         $this->updateMode = true;
     }
@@ -190,17 +190,18 @@ class Refacciones extends Component
 
         foreach ($this->filenames as $key => $file) {
 
-            $propuesta = new Propuesta;
-            $propuesta->nombre_propuesta = 'Nueva Propuesta';
-            $propuesta->reparacion_id = $this->selected_id;
-            $propuesta->save();
+            //$propuesta = new Propuesta;
+            //$propuesta->nombre_propuesta = 'Nueva Propuesta';
+            //$propuesta->reparacion_id = $this->selected_id;
+            //$propuesta->save();
 
             $datos[$key]['filename'] = $file->getClientOriginalName();
             $datos[$key]['total'] = 0;
             $datos[$key]['reparacion_id'] = $this->selected_id;
-            $datos[$key]['propuesta_id'] = $propuesta->id;
+            //$datos[$key]['propuesta_id'] = $propuesta->id;
 
             $archivo = $file->store('propuestas','public');
+            //$archivo = $file->store('propuestas','public');
             $datos[$key]['path'] = $archivo;
             $archivo = storage_path("app/public/$archivo");
 
@@ -252,16 +253,16 @@ class Refacciones extends Component
         }
 
         foreach ($datos as $key => $info) {
-            $propuesta = Propuesta::findOrFail($info['propuesta_id']);
+            /* $propuesta = Propuesta::find($info['propuesta_id']);
             $propuesta->update([
                 'filename' => $info['filename'],
                 'path' => $info['path'],
                 'hashfile' => $info['hashfile'],
                 'vin' => $info['vin'],
                 'total' => $info['total'],
-            ]);
+            ]); */
 
-            foreach ($info['conceptos'] as $valor) {
+            /* foreach ($info['conceptos'] as $valor) {
                 $refaccion = new Refaccion;
                 $refaccion->parte = $valor['parte'];
                 $refaccion->descripcion = $valor['descripcion'];
@@ -269,7 +270,17 @@ class Refacciones extends Component
                 $refaccion->precio = $valor['precio'];
                 $refaccion->propuesta_id = $datos[$key]['propuesta_id'];
                 $refaccion->save();
-            }
+            } */
+
+            $refaccion = New Refaccion;
+            $refaccion->reparacion_id = $this->selected_id;
+            $refaccion->vin = $info['vin'];
+            $refaccion->total = $info['total'];
+            $refaccion->filename = $info['filename'];
+            $refaccion->path = $info['path'];
+            $refaccion->hashfile = $info['hashfile'];
+            $refaccion->save();
+
         }
 
         $this->resetInput();
@@ -280,9 +291,9 @@ class Refacciones extends Component
     public function destroy($id)
     {
         if ($id) {
-            $file = Propuesta::select('path')->find($id);
+            $file = Refaccion::select('path')->find($id);
             Storage::disk('public')->delete($file->path);
-            Propuesta::find($id)->delete();
+            Refaccion::find($id)->delete();
         }
     }
 }

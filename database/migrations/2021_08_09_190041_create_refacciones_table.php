@@ -10,14 +10,15 @@ class CreateRefaccionesTable extends Migration
     {
         Schema::create('refacciones', function (Blueprint $table) {
             $table->id();
-            $table->string('parte');
-            $table->string('descripcion');
-            $table->integer('cantidad');
-            $table->decimal('precio');
+            $table->string('vin');
+            $table->string('total');
+            $table->string('filename');
+            $table->string('path');
+            $table->string('hashfile');
             $table->timestamps();
 
-            $table->unsignedBigInteger('propuesta_id')->nullable();
-            $table->foreign('propuesta_id')->references('id')->on('propuestas')->onDelete('cascade');
+            $table->unsignedBigInteger('reparacion_id')->nullable();
+            $table->foreign('reparacion_id')->references('id')->on('reparaciones')->onDelete('cascade');
         });
     }
 

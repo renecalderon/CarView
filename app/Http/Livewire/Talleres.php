@@ -11,7 +11,7 @@ class Talleres extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $numero, $descripcion;
+    public $selected_id, $keyWord, $numero, $descripcion, $sucursal_id;
     public $updateMode = false;
 
     public function render()
@@ -21,6 +21,7 @@ class Talleres extends Component
             'talleres' => Taller::latest()
 						->orWhere('numero', 'LIKE', $keyWord)
 						->orWhere('descripcion', 'LIKE', $keyWord)
+						->orWhere('sucursal_id', 'LIKE', $keyWord)
 						->paginate(10),
         ]);
     }
@@ -35,6 +36,7 @@ class Talleres extends Component
     {
 		$this->numero = null;
 		$this->descripcion = null;
+		$this->sucursal_id = null;
     }
 
     public function store()
@@ -42,11 +44,13 @@ class Talleres extends Component
         $this->validate([
 		'numero' => 'required',
 		'descripcion' => 'required',
+		'sucursal_id' => 'required',
         ]);
 
         Taller::create([
 			'numero' => $this-> numero,
-			'descripcion' => $this-> descripcion
+			'descripcion' => $this-> descripcion,
+			'sucursal_id' => $this-> sucursal_id
         ]);
 
         $this->resetInput();
@@ -61,6 +65,7 @@ class Talleres extends Component
         $this->selected_id = $id;
 		$this->numero = $record-> numero;
 		$this->descripcion = $record-> descripcion;
+		$this->sucursal_id = $record-> sucursal_id;
 
         $this->updateMode = true;
     }
@@ -70,13 +75,15 @@ class Talleres extends Component
         $this->validate([
 		'numero' => 'required',
 		'descripcion' => 'required',
+		'sucursal_id' => 'required',
         ]);
 
         if ($this->selected_id) {
 			$record = Taller::find($this->selected_id);
             $record->update([
 			'numero' => $this-> numero,
-			'descripcion' => $this-> descripcion
+			'descripcion' => $this-> descripcion,
+			'sucursal_id' => $this-> sucursal_id
             ]);
 
             $this->resetInput();

@@ -37,6 +37,9 @@
                     <ul class="navbar-nav mr-auto">
 						<!--Nav Bar Hooks - Do not delete!!-->
 						<li class="nav-item">
+                            <a href="{{ url('/eventos') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Eventos</a> 
+                        </li>
+						<li class="nav-item">
                             <a href="{{ url('/estados') }}" class="nav-link"><i class="fab fa-laravel text-info"></i> Estados</a> 
                         </li>
 						<li class="nav-item">

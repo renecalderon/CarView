@@ -3,13 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cliente;
-use App\Models\Comentario;
 use App\Models\Estado;
+use App\Models\Evento;
 use App\Models\Marca;
 use App\Models\Propuesta;
 use App\Models\Reparacion;
 use App\Models\Semaforo;
-use App\Models\Situacione;
+use App\Models\Situacion;
 use App\Models\Tiempo;
 use App\Models\Tipo;
 use App\Models\User;
@@ -27,7 +27,6 @@ class Tecnicos extends Component
     public $selected_id, $keyWord, $referencia, $descripcion, $fechacita, $tiempoestimado, $fechaingreso, $fechafin, $fechaentrega, $codigodmsasesorservicio, $codigodmsoperadortecnico, $matriculatemporal, $user_id, $estado_id, $vehiculo_id, $taller_id, $tipo_id, $file;
     public $nombre, $apellidopaterno, $apellidomaterno, $email, $celular;
     public $vin, $matricula, $familia, $modelo, $color, $anio, $marca_id, $cliente_id;
-    public $comentarios;
     public $asesorasignado, $tecnicoasignado;
     public $estado;
     public $task_id, $task;
@@ -92,7 +91,6 @@ class Tecnicos extends Component
         $this->modelo = null;
         $this->color = null;
         $this->anio = null;
-        $this->comentarios = null;
         $this->codigodmsoperadortecnico = null;
         $this->estado = null;
         $this->task_id = null;
@@ -159,7 +157,7 @@ class Tecnicos extends Component
 
         $this->numPropuestas = Propuesta::where('reparacion_id', $id)->count();
 
-        $status = Situacione::find($record->situacion_id);
+        $status = Situacion::find($record->situacion_id);
         $this->estado = $status->nombre;
 
         $this->semaforos = Semaforo::all();
@@ -195,6 +193,16 @@ class Tecnicos extends Component
             'reparacion_id' => $selected_id,
         ]);
 
+        $tecnico = User::select('name')->find($tecnicoasignado);
+
+        $evento = new Evento();
+        $evento->comentario = $tecnico->name." iniciando trabajo en taller.";
+        $evento->categoria_id = "4";
+        $evento->reparacion_id = $selected_id;
+        $evento->user_id = auth()->id();
+        $evento->created_at = date("Y-m-d H:i:s");
+        $evento->save();
+
         $this->resetInput();
         $this->updateMode = false;
         session()->flash('message', 'Iniciando trabajo...');
@@ -208,6 +216,16 @@ class Tecnicos extends Component
             $record->update([
                 'estado' => 'closed',
             ]);
+
+            $tecnico = User::select('name')->find($record->tecnico_id);
+
+            $evento = new Evento();
+            $evento->comentario = $tecnico->name." finalizando trabajo en taller.";
+            $evento->categoria_id = "4";
+            $evento->reparacion_id = $record->reparacion_id;
+            $evento->user_id = auth()->id();
+            $evento->created_at = date("Y-m-d H:i:s");
+            $evento->save();
 
             $this->resetInput();
             $this->updateMode = false;

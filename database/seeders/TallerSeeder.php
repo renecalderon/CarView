@@ -12,11 +12,13 @@ class TallerSeeder extends Seeder
         Taller::create([
             'numero' => '4',
             'descripcion' => 'TOYOTA GUERRERO',
+            'sucursal_id' => '1'
         ]);
 
         Taller::create([
             'numero' => '1',
             'descripcion' => 'TOYOTA UNIVERSIDAD',
+            'sucursal_id' => '2'
         ]);
     }
 }

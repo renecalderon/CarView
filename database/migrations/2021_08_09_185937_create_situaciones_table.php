@@ -17,6 +17,9 @@ class CreateSituacionesTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion');
+            $table->string('icono', 15);
+            $table->string('color', 10);
+            $table->string('colorname', 15);
             $table->timestamps();
         });
     }

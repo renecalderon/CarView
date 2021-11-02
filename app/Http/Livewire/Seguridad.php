@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Comentario;
+use App\Models\Categoria;
+use App\Models\Evento;
 use App\Models\Reparacion;
-use App\Models\Situacione;
+use App\Models\Situacion;
 use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -71,20 +72,32 @@ class Seguridad extends Component
             if (empty($reparacion->fechaingreso)) {
 
                 if ($reparacion->situacion_id == '1' || empty($reparacion->situacion_id)) {
-                    $situacion = Situacione::where('nombre', 'ARRIBO')->first();
+                    $situacion = Situacion::where('nombre', 'ARRIBO')->first();
 
                     $reparacion->situacion_id = $situacion->id;
-                    $comentario = new Comentario();
+                    /* $comentario = new Comentario();
                     $comentario->tipo = 'seguridad';
                     $comentario->comentario = $situacion->descripcion;
                     $comentario->reparacion_id = $reparacion->id;
                     $comentario->user_id = auth()->id();
-                    $comentario->save();
+                    $comentario->save(); */
                 }
 
                 $reparacion->fechaingreso = date('Y-m-d h:i:s');
                 $reparacion->save();
+
+                // Agregar evento
+                $situacion = Situacion::select('nombre', 'descripcion')->find($reparacion->situacion_id);
+                $categoria = Categoria::select('id')->where('categoria', 'Seguridad')->first();
+                $evento = new Evento();
+                $evento->comentario = $situacion->nombre;
+                $evento->categoria_id = $categoria->id;
+                $evento->reparacion_id = $reparacion->id;
+                $evento->user_id = auth()->id();
+                $evento->created_at = date("Y-m-d H:i:s");
+                $evento->save();
             }
+
             session()->flash('message', "$placa, $vehiculo->modelo, $vehiculo->color");
         }else{
 
@@ -97,7 +110,7 @@ class Seguridad extends Component
                 $mensaje = "Matricula registrada: $placa";
             }
 
-            $situacion = Situacione::where('nombre', 'ARRIBO')->first();
+            $situacion = Situacion::where('nombre', 'ARRIBO')->first();
 
             $reparacion->descripcion = "Cliente sin Cita";
             $reparacion->fechaingreso = date('Y-m-d h:i:s');
@@ -105,15 +118,27 @@ class Seguridad extends Component
             $reparacion->situacion_id = $situacion->id;
             $reparacion->save();
 
-            $comentario = new Comentario();
+            /* $comentario = new Comentario();
             $comentario->tipo = 'seguridad';
             $comentario->comentario = $situacion->descripcion;
             $comentario->reparacion_id = $reparacion->id;
             $comentario->user_id = auth()->id();
-            $comentario->save();
+            $comentario->save(); */
+
+            // Agregar evento
+            $situacion = Situacion::select('nombre', 'descripcion')->find($reparacion->situacion_id);
+            $categoria = Categoria::select('id')->where('categoria', 'Seguridad')->first();
+            $evento = new Evento();
+            $evento->comentario = $situacion->nombre.' , '.$situacion->descripcion;
+            $evento->categoria_id = $categoria->id;
+            $evento->reparacion_id = $reparacion->id;
+            $evento->user_id = auth()->id();
+            $evento->created_at = date("Y-m-d H:i:s");
+            $evento->save();
 
             session()->flash('message', "$mensaje");
         }
+        $this->resetInput();
     }
 
     private function resetInput()

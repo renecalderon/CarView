@@ -13,7 +13,29 @@ class Propuesta extends Model
 
     protected $table = 'propuestas';
 
-    protected $fillable = ['nombre_propuesta', 'vin', 'total', 'manodeobra', 'filename', 'path', 'hashfile', 'reparacion_id','estado_id','semaforo_id'];
+    protected $fillable = [
+        'propuesta_numero',
+        'propuesta_fecha',
+        'propuesta_tipo',
+        'propuesta_referencia',
+        'propuesta_asesor',
+        'propuesta_descripcion',
+        'propuesta_matricula',
+        'propuesta_vin',
+        'propuesta_modelo',
+        'propuesta_kilometros',
+        'propuesta_total_manodeobra',
+        'propuesta_total_refacciones',
+        'propuesta_base',
+        'propuesta_iva',
+        'propuesta_total',
+        'propuesta_filename',
+        'propuesta_path',
+        'propuesta_hashfile',
+        'reparacion_id',
+        'estado_id',
+        'semaforo_id'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

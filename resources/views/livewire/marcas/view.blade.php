@@ -1,7 +1,7 @@
 @section('title', __('Marcas'))
 <div class="container-fluid">
 	<div class="row justify-content-center">
-		<div class="col-md-10">
+		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">
 					<div style="display: flex; justify-content: space-between; align-items: center;">
@@ -10,7 +10,7 @@
 							Lista de Marcas </h4>
 						</div>
 						<div wire:poll.60s>
-							<code><h5>{{ now()->format('Y-m-d g:i a') }}</h5></code>
+							<code><h5>{{ now()->format('j M, g:i a') }}</h5></code>
 						</div>
 						@if (session()->has('message'))
 						<div wire:poll.4s class="btn btn-sm btn-success" style="margin-top:0px; margin-bottom:0px;"> {{ session('message') }} </div>

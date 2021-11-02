@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Tallere</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Update Evento</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span wire:click.prevent="cancel()" aria-hidden="true">×</span>
                 </button>
@@ -12,16 +12,20 @@
                 <form>
 					<input type="hidden" wire:model="selected_id">
             <div class="form-group">
-                <label for="numero"></label>
-                <input wire:model="numero" type="text" class="form-control" id="numero" placeholder="Numero">@error('numero') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="comentario"></label>
+                <input wire:model="comentario" type="text" class="form-control" id="comentario" placeholder="Comentario">@error('comentario') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="descripcion"></label>
-                <input wire:model="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripcion">@error('descripcion') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="categoria_id"></label>
+                <input wire:model="categoria_id" type="text" class="form-control" id="categoria_id" placeholder="Categoria Id">@error('categoria_id') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="sucursal_id"></label>
-                <input wire:model="sucursal_id" type="text" class="form-control" id="sucursal_id" placeholder="Sucursal Id">@error('sucursal_id') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="user_id"></label>
+                <input wire:model="user_id" type="text" class="form-control" id="user_id" placeholder="User Id">@error('user_id') <span class="error text-danger">{{ $message }}</span> @enderror
+            </div>
+            <div class="form-group">
+                <label for="reparacion_id"></label>
+                <input wire:model="reparacion_id" type="text" class="form-control" id="reparacion_id" placeholder="Reparacion Id">@error('reparacion_id') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
 
                 </form>

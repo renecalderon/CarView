@@ -13,14 +13,14 @@ class Refaccion extends Model
 
     protected $table = 'refacciones';
 
-    protected $fillable = ['parte','descripcion','cantidad','precio','propuesta_id'];
+    protected $fillable = ['vin','total','filename','path','hashfile','reparacion_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function propuesta()
+    public function reparacion()
     {
-        return $this->hasOne('App\Models\Propuesta', 'id', 'propuesta_id');
+        return $this->hasOne('App\Models\Reparacion', 'id', 'reparacion_id');
     }
 
 }

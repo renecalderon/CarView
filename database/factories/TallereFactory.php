@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Taller;
+use App\Models\Tallere;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class TallerFactory extends Factory
+class TallereFactory extends Factory
 {
     protected $model = Tallere::class;
 
@@ -15,6 +15,7 @@ class TallerFactory extends Factory
         return [
 			'numero' => $this->faker->name,
 			'descripcion' => $this->faker->name,
+			'sucursal_id' => $this->faker->name,
         ];
     }
 }

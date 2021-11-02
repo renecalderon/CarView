@@ -53,28 +53,26 @@
                     </div>
                 </form>
 
-                @if ($propuestas > 0)
+                @if ($refacciones > 0)
                     <div class="table-responsive">
                         <table class="table m-0 table-sm">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Propuesta</th>
-                                    <th>Descripcion</th>
                                     <th class="text-right">Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (App\Models\Propuesta::where('reparacion_id', $selected_id)->get() as $propuesta)
+                                @foreach (App\Models\Refaccion::where('reparacion_id', $selected_id)->get() as $refaccion)
                                     <tr>
                                         <td class='align-middle'>{{ $loop->iteration }}</td>
-                                        <td class='align-middle'><a href="{{url($propuesta->path)}}" target="_blank">{{$propuesta->filename}}</a></td>
-                                        <td class='align-middle'>{{$propuesta->nombre_propuesta}}</td>
-                                        <td class="text-right align-middle">{{number_format($propuesta->total, 2, '.', ',')}}</td>
+                                        <td class='align-middle'><a href="{{url($refaccion->path)}}" target="_blank">{{$refaccion->filename}}</a></td>
+                                        <td class="text-right align-middle">{{number_format($refaccion->total, 2, '.', ',')}}</td>
                                         <td class='align-middle'>
-                                            @if ($propuesta->status_id === NULL)
-                                                <button type="button" class="btn btn-danger btn-sm float-right" onclick="confirm('Confirmar eliminacion de propuesta? \nNo se podra deshacer!')||event.stopImmediatePropagation()" wire:click="destroy({{$propuesta->id}})"><i class="fas fa-trash"></i></button>
+                                            @if ($refaccion->status_id === NULL)
+                                                <button type="button" class="btn btn-danger btn-sm float-right" onclick="confirm('Confirmar eliminacion de propuesta? \nNo se podra deshacer!')||event.stopImmediatePropagation()" wire:click="destroy({{$refaccion->id}})"><i class="fas fa-trash"></i></button>
                                             @endif
                                         </td>
                                     </tr>

@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Models\Evento;
 use App\Models\Marca;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Reparacion;
-use App\Models\Situacione;
+use App\Models\Situacion;
 use App\Models\Taller;
 use App\Models\User;
 use App\Models\Vehiculo;
@@ -163,7 +165,7 @@ class Citas extends Component
 
                     $reparacion->user_id = auth()->id();
 
-                    $situacion = Situacione::where('nombre', "CITA")->first();
+                    $situacion = Situacion::where('nombre', "CITA")->first();
                     $reparacion->situacion_id = $situacion->id;
 
                     $vehiculo = Vehiculo::where('vin', $citas[$i]['10'])->first();
@@ -173,6 +175,16 @@ class Citas extends Component
                     $reparacion->taller_id = $taller['id'];
 
                     $reparacion->save();
+
+                    $categoria = Categoria::select('id')->where('categoria', 'Citas')->first();
+                    $evento = new Evento();
+                    $evento->comentario = $reparacion->fechacita;
+                    $evento->categoria_id = $categoria->id;
+                    $evento->reparacion_id = $reparacion->id;
+                    $evento->user_id = auth()->id();
+                    $evento->created_at = date("Y-m-d H:i:s");
+                    $evento->save();
+
                 }else{
                     $reparacion = Reparacion::where('referencia', $referencia)->first();
                 }
